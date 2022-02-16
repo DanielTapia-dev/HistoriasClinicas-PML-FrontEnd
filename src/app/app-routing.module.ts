@@ -8,12 +8,16 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path: 'pages',
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
+  },
+  {
     path: '404',
     loadChildren: () => import('./shared/shared.module').then(m => m.SharedModule)
   },
   {
     path: '**',
-    redirectTo: '404'
+    redirectTo: 'auth'
   }
 ];
 
