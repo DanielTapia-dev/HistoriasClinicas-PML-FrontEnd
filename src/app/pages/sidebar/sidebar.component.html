@@ -1,0 +1,20 @@
+<aside
+  id="sidebar"
+  class="bg-celeste relative h-screen hidden w-52 sm:block shadow-xl"
+>
+  <nav class="text-white text-base font-semibold pt-2">
+    <a
+      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1"
+      ><i class="fas fa-tachometer-alt mr-3"></i>Atención
+    </a>
+    <a
+      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1"
+      ><i class="fas fa-tachometer-alt mr-3"></i>Consultas
+    </a>
+    <a
+      (click)="Logout()"
+      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1 hover:text-purple-500"
+      ><i class="fas fa-tachometer-alt mr-3"></i>Salir
+    </a>
+  </nav>
+</aside>

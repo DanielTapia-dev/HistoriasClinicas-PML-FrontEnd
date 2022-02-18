@@ -13,7 +13,9 @@
             formControlName="usuario"
             class="font-sans w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
           />
-          <span *ngIf="campoEsValido('usuario')" class="text-xs w-min text-red-600"
+          <span
+            *ngIf="campoEsValido('usuario')"
+            class="text-xs w-min text-red-600"
             >El usuario es requerido
           </span>
         </div>
@@ -25,7 +27,9 @@
             formControlName="password"
             class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
           />
-          <span *ngIf="campoEsValido('password')" class="text-xs w-min text-red-600"
+          <span
+            *ngIf="campoEsValido('password')"
+            class="text-xs w-min text-red-600"
             >El password es requerido
           </span>
         </div>
@@ -33,7 +37,7 @@
           <button
             [disabled]="LoginForm.invalid"
             type="submit"
-            class="px-6 py-2 mt-4 text-white rounded-lg bg-blue-400 hover:bg-blue-700 shadow-md mr-4"
+            class="px-6 py-2 mt-4 text-white rounded-lg bg-celeste hover:bg-blue-700 shadow-md mr-4"
           >
             Ingresar
           </button>
