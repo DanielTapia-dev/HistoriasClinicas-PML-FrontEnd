@@ -2,19 +2,25 @@
   id="sidebar"
   class="bg-celeste relative h-screen hidden w-52 sm:block shadow-xl"
 >
-  <nav class="text-white text-base font-semibold pt-2">
-    <a
-      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1"
-      ><i class="fas fa-tachometer-alt mr-3"></i>Atención
+  <div
+    class="pt-3 pl-3 py-1 hover:translate-x-4 cursor-pointer transition duration-300 ease-in-out"
+  >
+    <a class="text-white hover:text-yellow-400 text-2xl font-semibold">
+      <i class="fas fa-user-alt mr-3"></i>{{ this.nombreRol }}
     </a>
+  </div>
+  <nav class="text-white text-base font-semibold pt-2 ml-2">
     <a
-      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1"
-      ><i class="fas fa-tachometer-alt mr-3"></i>Consultas
+      *ngFor="let element of sidebar"
+      (click)="changeComponent(element.url)"
+      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1 hover:text-yellow-400 hover:scale-105 transition duration-300 ease-in-out max-w-min"
+      ><i class="{{ element.icono }} mx-3"></i>
+      {{ element.nombre }}
     </a>
     <a
       (click)="Logout()"
-      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1 hover:text-purple-500"
-      ><i class="fas fa-tachometer-alt mr-3"></i>Salir
+      class="flex items-center active-nav-link text-white nav-item cursor-pointer py-1 hover:text-yellow-400 hover:scale-105 transition duration-300 ease-in-out max-w-min"
+      ><i class="fa fa-sign-out mx-3"></i>Salir
     </a>
   </nav>
 </aside>

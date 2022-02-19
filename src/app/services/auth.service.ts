@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment';
 import { LoginResponse, Usuario } from '../models/auth';
 import { catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +30,12 @@ export class AuthService {
       map(resp => resp.ok),
       catchError(err => of(err.error.message))
     );
+  }
+
+  obtenerSidebar() {
+    const url = `${this.baseUrl}sidebar`;
+    const headers = new HttpHeaders()
+      .set('auth-token', localStorage.getItem('token') || '');
+    return this.http.get<any>(url, { headers });
   }
 }
