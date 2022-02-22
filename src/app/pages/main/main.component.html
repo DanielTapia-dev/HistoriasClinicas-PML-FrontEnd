@@ -1,3 +1,85 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
-<app-dashboard></app-dashboard>
+<div id="PantallaPosterior">
+  <app-navbar></app-navbar>
+  <div class="flex flex-col md:flex-row">
+    <div>
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="bg-slate-100 w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+
+<div
+  id="Modal"
+  class="bg-white fixed top-11 text-black animate-enter-card rounded-lg border-black p-2"
+  style="left: 10%; right: 10%"
+>
+  <div class="overflow-x flex flex-col">
+    <h1 class="text-xl font-semibold text-blue-900 pb-2">
+      Acuerdo de confidencialidad
+    </h1>
+    <hr />
+    <h1 class="text-lg pt-2 font-semibold">
+      REGLAMENTO DE INFORMACIÓN CONFIDENCIAL EN EL SISTEMA NACIONAL DE SALUD
+    </h1>
+    <h1 class="text-base pt-1">
+      Acuerdo Ministerial 5216 <br />Oficial Suplemento 427 de 29-ene-2015
+      <br />Estado: Vigente <br />Art. 9.- El personal operativo y
+      administrativo de los establecimientos del Sistema Nacional de Salud que
+      tenga acceso a información de los/las usuarios/as durante el ejercicio de
+      sus funciones, deberá guardar reserva de manera indefinida respecto de
+      dicha información y no podrá divulgar la información contenida en la
+      historia clínica, ni aquella constante en todo documento donde reposen
+      datos confidenciales de los/las usuarios/as. <br />
+      10.- Los documento que contenga información confidencial se mantendrá
+      abiertos (tanto en formato físico como parte de un estudio epidemiológico,
+      una auditoría de calidad de la atención en salud u otros debidamente
+      justificados y que se enmarquen en los casos establecidos en el presente
+      Reglamento. <br />Art. 61.- Las instituciones públicas y privadas, los
+      profesionales de salud y la población en general, reportarán en forma
+      oportuna la existencia de casos sospechosos, probables, compatibles y
+      confirmados de enfermedades declaradas por la autoridad sanitaria nacional
+      como de notificación obligatoria y aquellas de reporte internacional.
+      <u
+        >Las instituciones y profesionales de salud garantizan la
+        confidencialidad de la información entregada y recibida.</u
+      >
+    </h1>
+    <h1 class="text-lg pt-2 font-semibold">LEY DE ESTADÍSTICA</h1>
+    <h1 class="text-base pt-1">
+      REGISTRO OFICIAL <br />ORGANO DEL GOBIERNO DEL ECUADOR <br />ECUADOR HA
+      SIDO, ES Y SERA PAIS AMAZONICO <br />QUITO, VIERNES 7 DE MAYO DE 1976 -
+      NUMERO 82 N.-323 <br />Art. 25.- Las personas que, de cualquier modo,
+      intervengan en la ejecución de investigaciones que realicen las entidades
+      sujetas al Sistema Estadístico Nacional, no podrán requerir información
+      distinta de la que haya sido autorizada. De contravenir a esta
+      prohibición, se les impondrá las sanciones establecidas en la Ley de
+      Servicio Civil y Carrera Administrativa.
+    </h1>
+    <h1 class="text-base pt-2 font-semibold">
+      De acuerdo al REGLAMENTO DE INFORMACIÓN CONFIDENCIAL EN EL SISTEMA
+      NACIONAL DE SALUD y LEY DE ESTADÍSTICA, ACEPTO el cumplimiento de los
+      artículos descritos.
+    </h1>
+  </div>
+  <hr />
+  <div class="pt-1">
+    <h1 class="pt-1 flex flex-row-reverse">
+      <button
+        (click)="CerrarModal()"
+        class="bg-green-400 px-2 py-1 ml-2 rounded-sm text-white font-medium font-sans hover:scale-110 transition duration-300 ease-in-out"
+      >
+        <i class="fa fa-check pr-1 text-xs"></i>Aceptar
+      </button>
+      <button
+        (click)="Logout()"
+        class="bg-slate-400 px-2 py-1 rounded-sm text-white font-medium font-sans hover:scale-110 transition duration-300 ease-in-out"
+      >
+        <i class="fa fa-times pr-1 text-sm"></i>Cancelar
+      </button>
+    </h1>
+  </div>
+</div>

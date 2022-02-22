@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
 
   LoginForm: FormGroup = this.fb.group({
     'usuario': ['dtapia', Validators.required],
-    'password': ['123456', Validators.required]
+    'password': ['danny123', Validators.required]
   })
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) { }

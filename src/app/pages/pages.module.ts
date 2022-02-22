@@ -5,6 +5,8 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { MainComponent } from './main/main.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AtencionComponent } from './atencion/atencion.component';
+import { HistorialesComponent } from './historiales/historiales.component';
 
 
 @NgModule({
@@ -12,7 +14,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     DashboardComponent,
     MainComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    AtencionComponent,
+    HistorialesComponent
   ],
   imports: [
     CommonModule,

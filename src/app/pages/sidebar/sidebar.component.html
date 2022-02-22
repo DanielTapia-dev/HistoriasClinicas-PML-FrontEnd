@@ -5,7 +5,10 @@
   <div
     class="pt-3 pl-3 py-1 hover:translate-x-4 cursor-pointer transition duration-300 ease-in-out"
   >
-    <a class="text-white hover:text-yellow-400 text-2xl font-semibold">
+    <a
+      class="text-white hover:text-yellow-400 text-2xl font-semibold"
+      (click)="changeComponent('pages/Dashboard')"
+    >
       <i class="fas fa-user-alt mr-3"></i>{{ this.nombreRol }}
     </a>
   </div>
@@ -24,3 +27,25 @@
     </a>
   </nav>
 </aside>
+<header class="w-full sm:hidden hidden bg-celeste" id="sidebarMobile">
+  <div
+    class="pt-1 px-1 hover:translate-x-4 cursor-pointer transition duration-300 ease-in-out"
+  >
+    <a
+      class="text-white hover:text-yellow-400 text-lg font-semibold"
+      (click)="changeComponent('pages/Dashboard')"
+    >
+      <i class="fas fa-user-alt mr-3"></i>{{ this.nombreRol }}
+    </a>
+  </div>
+  <nav class="text-white text-base font-semibold pb-1 px-1">
+    <div>
+      <a
+        *ngFor="let element of sidebar"
+        routerLink="{{ element.url }}"
+        class="flex items-center active-nav-link text-white nav-item hover:text-yellow-400 hover:scale-105 transition duration-300 ease-in-out max-w-min"
+        ><i class="{{ element.icono }} mr-3"></i>{{ element.nombre }}
+      </a>
+    </div>
+  </nav>
+</header>
