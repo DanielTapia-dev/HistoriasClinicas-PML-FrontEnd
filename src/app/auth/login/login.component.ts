@@ -26,9 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   Login() {
-    console.log(this.LoginForm.value);
     this.authService.login(this.LoginForm.value.usuario, this.LoginForm.value.password).subscribe(resp => {
-      console.log(resp);
       if (resp === true) {
         this.router.navigateByUrl('/pages');
       } else {
@@ -40,7 +38,6 @@ export class LoginComponent implements OnInit {
         })
       }
     });
-
   }
 
 }

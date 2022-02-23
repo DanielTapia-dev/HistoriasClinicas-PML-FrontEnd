@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { LoginResponse, Usuario } from '../models/auth';
 import { catchError, map, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -37,5 +37,21 @@ export class AuthService {
     const headers = new HttpHeaders()
       .set('auth-token', localStorage.getItem('token') || '');
     return this.http.get<any>(url, { headers });
+  }
+
+  validarToken(): Observable<boolean> {
+    const url = `${this.baseUrl}empleados/renew`;
+    const headers = new HttpHeaders()
+      .set('auth-token', localStorage.getItem('token') || '');
+
+    return this.http.get<LoginResponse>(url, { headers })
+      .pipe(
+        map(resp => {
+          localStorage.setItem('token', resp.token!);
+          this._usuario = resp;
+          return resp.ok!;
+        }),
+        catchError(err => of(false))
+      );
   }
 }

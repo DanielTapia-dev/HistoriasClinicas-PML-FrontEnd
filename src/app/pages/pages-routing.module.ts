@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
+import { ValidarPaginaGuard } from '../guards/validar-pagina.guard';
 import { AtencionComponent } from './atencion/atencion.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HistorialesComponent } from './historiales/historiales.component';
@@ -16,7 +17,9 @@ const routes: Routes = [
       },
       {
         path: 'historiales',
-        component: HistorialesComponent
+        component: HistorialesComponent,
+        canActivate: [ValidarPaginaGuard],
+        canLoad: [ValidarPaginaGuard]
       },
       {
         path: '',
