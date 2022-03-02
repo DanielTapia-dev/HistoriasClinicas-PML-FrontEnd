@@ -27,7 +27,6 @@ export class SidebarComponent implements OnInit {
   }
 
   changeComponent(url: string) {
-    console.log(url);
     this.router.navigate([url]);
   }
 

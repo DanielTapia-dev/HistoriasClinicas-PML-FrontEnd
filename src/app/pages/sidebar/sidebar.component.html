@@ -1,6 +1,6 @@
 <aside
   id="sidebar"
-  class="bg-celeste relative h-screen hidden w-52 sm:block shadow-xl"
+  class="bg-celeste relative h-full hidden w-52 sm:block shadow-xl"
 >
   <div
     class="pt-3 pl-3 py-1 hover:translate-x-4 cursor-pointer transition duration-300 ease-in-out"
@@ -45,6 +45,13 @@
         routerLink="{{ element.url }}"
         class="flex items-center active-nav-link text-white nav-item hover:text-yellow-400 hover:scale-105 transition duration-300 ease-in-out max-w-min"
         ><i class="{{ element.icono }} mr-3"></i>{{ element.nombre }}
+      </a>
+    </div>
+    <div>
+      <a
+        (click)="Logout()"
+        class="flex items-center active-nav-link text-white nav-item cursor-pointer hover:text-yellow-400 hover:scale-105 transition duration-300 ease-in-out max-w-min"
+        ><i class="fa fa-sign-out mr-3"></i>Salir
       </a>
     </div>
   </nav>

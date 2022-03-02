@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { AtencionComponent } from './atencion/atencion.component';
 import { HistorialesComponent } from './historiales/historiales.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { HistorialesComponent } from './historiales/historiales.component';
   ],
   imports: [
     CommonModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    NgxPaginationModule
   ]
 })
 export class PagesModule { }

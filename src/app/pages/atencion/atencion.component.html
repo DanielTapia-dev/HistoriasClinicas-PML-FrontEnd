@@ -1,1 +1,54 @@
-<p>atencion works!</p>
+<div>
+  <div class="flex flex-col md:flex-row">
+    <div class="flex flex-col w-2/5">
+      <div *ngIf="buscadorCedula" class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg">
+        <button (click)="cargarClientes()" class="fas fa-search text-xl px-1 text-blue-900"></button>
+        <input placeholder="Cédula" id="inputBuscadorCedula" class="w-full bg-inherit outline-0 ml-1" type="number"
+          (keyup.enter)="onEnter()" />
+      </div>
+      <div *ngIf="buscadorNombre" class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg">
+        <button (click)="cargarClientes()" class="fas fa-search text-xl px-1 text-blue-900"></button>
+        <input placeholder="Nombre" id="inputBuscadorNombre" class="w-full bg-inherit outline-0 ml-1" type="text"
+          (keyup.enter)="onEnter()" />
+      </div>
+      <div class="mx-2 mt-1 flex flex-row">
+        <label (click)="cambiarBuscador('cedula')" class="font-semibold text-blue-900"><input class="mr-1 rounded-full"
+            type="radio" name="buscador" id="cbox1" checked />Cédula</label>
+        <label (click)="cambiarBuscador('nombre')" class="font-semibold text-blue-900"><input class="mx-1 rounded-full"
+            type="radio" name="buscador" id="cbox2" />Nombre</label>
+      </div>
+      <div *ngIf="clientes.length > 0" class="mt-2 pr-4">
+        <table class="table-auto outline outline-2 outline-blue-900 mx-2 rounded-lg w-full">
+          <thead class="text-blue-900 outline outline-2 outline-blue-900 rounded-t-lg">
+            <tr class="w-full mb-4 text-sm">
+              <th class="text-left">Cédula</th>
+              <th class="text-left">Nombre</th>
+              <th class="text-left">Historia</th>
+            </tr>
+          </thead>
+          <tbody class="bg-grey-light items-center" *ngFor="
+              let cliente of clientes
+                | paginate: { itemsPerPage: 5, currentPage: pageActual }
+            ">
+            <tr class="text-xxs">
+              <td class="my-2">{{ cliente.cedruc }}</td>
+              <td>{{ cliente.descrip }}</td>
+              <td class="py-2">
+                <button
+                  class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 hover:bg-blue-700 hover:shadow-blue-900/60">
+                  Crear Historia
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="display: flex; justify-content: center">
+          <pagination-controls (pageChange)="pageActual = $event" [maxSize]=6 [autoHide]=true [responsive]=true
+            previousLabel="Anterior" nextLabel="Siguiente">
+          </pagination-controls>
+        </div>
+      </div>
+    </div>
+    <p class="w-1/2">1</p>
+  </div>
+</div>

@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   private baseUrl: string = environment.baseUrl;
-  private _usuario!: Usuario;
+  private _usuario: any;
 
   get usuario() {
     return { ...this._usuario };

@@ -16,18 +16,18 @@ export class ValidarPaginaGuard implements CanActivate, CanLoad {
   }
 
   canActivate(): Observable<boolean> | boolean {
-    if (this.authService.usuario.tipo = 'Medico') {
-      this.router.navigateByUrl('/');
+    if (this.authService.usuario.usuario.tipo == 'Médico') {
       return true;
     } else {
+      this.router.navigateByUrl('/');
       return false;
     }
   }
   canLoad(): Observable<boolean> | boolean {
-    if (this.authService.usuario.tipo = 'Medico') {
-      this.router.navigateByUrl('/');
+    if (this.authService.usuario.tipo == 'Médico') {
       return true;
     } else {
+      this.router.navigateByUrl('/');
       return false;
     }
   }
