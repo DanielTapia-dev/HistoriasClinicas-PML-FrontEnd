@@ -34,9 +34,9 @@
               <td class="my-2">{{ cliente.cedruc }}</td>
               <td>{{ cliente.descrip }}</td>
               <td class="py-2">
-                <button
+                <button (click)="cargarHistoria(cliente.seq_ciu)"
                   class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 hover:bg-blue-700 hover:shadow-blue-900/60">
-                  Crear Historia
+                  Cargar Historia
                 </button>
               </td>
             </tr>

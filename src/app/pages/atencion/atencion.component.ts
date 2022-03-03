@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/models/clientes';
+import { HistoriasService } from 'src/app/services/historias.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import Swal from 'sweetalert2';
 
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
 })
 export class AtencionComponent implements OnInit {
 
-  constructor(private pacientesService: PacientesService) { }
+  constructor(private pacientesService: PacientesService, private historiasService: HistoriasService) { }
 
   checkCedula: any;
   checkNombre: any;
@@ -93,4 +94,32 @@ export class AtencionComponent implements OnInit {
     }
   }
 
+  cargarHistoria(ciu_per: number) {
+    this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
+      if (resp.length == 0) {
+        Swal.fire({
+          title: 'El paciente no tiene historia clinica, desea crearla?',
+          showDenyButton: true,
+          confirmButtonText: 'Crear',
+          denyButtonText: `Salir`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            const formData = {
+              ciu_per: ciu_per
+            }
+            this.historiasService.postHistoria(formData).subscribe(respHistoria => {
+              console.log(respHistoria);
+              Swal.fire('La historia fue creada correctamente', '', 'success');
+            });
+          } else if (result.isDenied) {
+            Swal.fire('La historia no fue creada', '', 'info')
+          }
+        })
+      } else {
+        console.log('Cargando datos...');
+      }
+
+    })
+  }
 }
