@@ -15,6 +15,16 @@ export class AtencionComponent implements OnInit {
 
   checkCedula: any;
   checkNombre: any;
+  clienteSeleccionado: any = {
+    cedruc: '',
+    descrip: '',
+    direcci: '',
+    email1: '',
+    seq_ciu: '',
+    telefon1: ''
+  };
+  historiaSeleccionada: any;
+  historiaBasePropia: any;
   buscadorCedula: boolean = true;
   buscadorNombre: boolean = false;
   inputBuscadorCedula: any;
@@ -94,8 +104,58 @@ export class AtencionComponent implements OnInit {
     }
   }
 
-  cargarHistoria(ciu_per: number) {
-    this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
+  cargarHistoria(ciu_per: number, cliente: any) {
+    this.pacientesService.getHistoriales(ciu_per).subscribe(resp => {
+      console.log(resp);
+      if (resp.length == 0) {
+        this.clienteSeleccionado = {
+          cedruc: '',
+          descrip: '',
+          direcci: '',
+          email1: '',
+          seq_ciu: '',
+          telefon1: ''
+        };
+        this.historiaSeleccionada = {};
+        Swal.fire('La historia clinica aún no ha sido creada', '', 'error');
+      } else {
+        this.clienteSeleccionado = cliente;
+        this.historiaSeleccionada = resp[0];
+        if (this.historiaSeleccionada.genero == 1) {
+          this.historiaSeleccionada = {
+            ...this.historiaSeleccionada,
+            genero: 'Masculino'
+          }
+        } else {
+          this.historiaSeleccionada = {
+            ...this.historiaSeleccionada,
+            genero: 'Femenino'
+          }
+        }
+        this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
+          console.log('Hola');
+          console.log(this.historiaSeleccionada);
+          if (resp.length == 0) {
+            const formData = {
+              ciu_per: ciu_per,
+              nrohistoria: this.historiaSeleccionada.nrohistoria,
+              sexo: this.historiaSeleccionada.genero,
+              discapacidad: 'NO',
+              orientacion_sexual: 'NINGUNA',
+              grupo_sanguineo: 'Asigne un tipo'
+            }
+            this.historiasService.postHistoria(formData).subscribe(respHistoria => {
+              console.log(respHistoria);
+              this.historiaBasePropia = respHistoria;
+            });
+          } else {
+            console.log('Cargando datos...');
+          }
+        })
+
+      }
+    })
+    /*this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
       if (resp.length == 0) {
         Swal.fire({
           title: 'El paciente no tiene historia clinica, desea crearla?',
@@ -103,7 +163,7 @@ export class AtencionComponent implements OnInit {
           confirmButtonText: 'Crear',
           denyButtonText: `Salir`,
         }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
+          // Read more about isConfirmed, isDenied below 
           if (result.isConfirmed) {
             const formData = {
               ciu_per: ciu_per
@@ -113,6 +173,14 @@ export class AtencionComponent implements OnInit {
               Swal.fire('La historia fue creada correctamente', '', 'success');
             });
           } else if (result.isDenied) {
+            this.clienteSeleccionado = {
+              cedruc: '',
+              descrip: '',
+              direcci: '',
+              email1: '',
+              seq_ciu: '',
+              telefon1: ''
+            };
             Swal.fire('La historia no fue creada', '', 'info')
           }
         })
@@ -120,6 +188,8 @@ export class AtencionComponent implements OnInit {
         console.log('Cargando datos...');
       }
 
-    })
+      //If exist the history
+      
+    })*/
   }
 }
