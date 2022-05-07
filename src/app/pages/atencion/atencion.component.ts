@@ -24,7 +24,9 @@ export class AtencionComponent implements OnInit {
     telefon1: ''
   };
   historiaSeleccionada: any;
-  historiaBasePropia: any;
+  historiaBasePropia: any = {
+
+  };
   buscadorCedula: boolean = true;
   buscadorNombre: boolean = false;
   inputBuscadorCedula: any;
@@ -32,6 +34,11 @@ export class AtencionComponent implements OnInit {
   pageActual: any = 1;
   maxPage: number = 30;
   clientes: Cliente[] = [];
+
+  //Objetos HTML
+  selectTipoSangre: any;
+  orientacionSexual: any;
+  discapacidad: any;
 
   ngOnInit(): void {
     this.checkCedula = document.querySelector('#cbox1');
@@ -132,8 +139,9 @@ export class AtencionComponent implements OnInit {
             genero: 'Femenino'
           }
         }
-        this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
-          console.log('Hola');
+        console.log(this.historiaSeleccionada);
+        this.historiaBasePropia.grupo_sanguineo = '';
+        this.historiasService.getHistoriasPorId(ciu_per).subscribe(respHistoriaPropia => {
           console.log(this.historiaSeleccionada);
           if (resp.length == 0) {
             const formData = {
@@ -141,16 +149,21 @@ export class AtencionComponent implements OnInit {
               nrohistoria: this.historiaSeleccionada.nrohistoria,
               sexo: this.historiaSeleccionada.genero,
               discapacidad: 'NO',
-              orientacion_sexual: 'NINGUNA',
-              grupo_sanguineo: 'Asigne un tipo'
+              orientacion_sexual: 'Heterosexual',
+              grupo_sanguineo: 'NN'
             }
             this.historiasService.postHistoria(formData).subscribe(respHistoria => {
-              console.log(respHistoria);
               this.historiaBasePropia = respHistoria;
             });
           } else {
-            console.log('Cargando datos...');
+            this.historiaBasePropia = respHistoriaPropia[0];
           }
+          this.selectTipoSangre = document.querySelector('#tipoSangre');
+          this.selectTipoSangre.value = this.historiaBasePropia.grupo_sanguineo;
+          this.orientacionSexual = document.querySelector('#orientacionSexual');
+          this.orientacionSexual.value = this.historiaBasePropia.orientacion_sexual;
+          this.discapacidad = document.querySelector('#discapacidad');
+          this.discapacidad.value = this.historiaBasePropia.discapacidad;
         })
 
       }
