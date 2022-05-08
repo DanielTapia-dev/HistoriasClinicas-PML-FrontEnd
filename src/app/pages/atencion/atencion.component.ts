@@ -39,10 +39,16 @@ export class AtencionComponent implements OnInit {
   selectTipoSangre: any;
   orientacionSexual: any;
   discapacidad: any;
+  edad: any;
+  edadNueva: any;
+  btnAgregarConsulta: any;
+  tablaNuevaConsulta: any;
 
   ngOnInit(): void {
     this.checkCedula = document.querySelector('#cbox1');
     this.checkNombre = document.querySelector('#cbox2');
+    this.btnAgregarConsulta = document.querySelector('#btnAgregarConsulta');
+    this.tablaNuevaConsulta = document.querySelector('#tablaNuevaConsulta');
   }
 
   cargarClientes() {
@@ -94,6 +100,15 @@ export class AtencionComponent implements OnInit {
 
   onEnter() {
     this.cargarClientes();
+    this.btnAgregarConsulta.classList.add('hidden');
+    this.clienteSeleccionado = {
+      cedruc: '',
+      descrip: '',
+      direcci: '',
+      email1: '',
+      seq_ciu: '',
+      telefon1: ''
+    };
   }
 
   cambiarBuscador(check: string) {
@@ -112,6 +127,7 @@ export class AtencionComponent implements OnInit {
   }
 
   cargarHistoria(ciu_per: number, cliente: any) {
+    this.tablaNuevaConsulta.classList.add('hidden');
     this.pacientesService.getHistoriales(ciu_per).subscribe(resp => {
       console.log(resp);
       if (resp.length == 0) {
@@ -139,70 +155,75 @@ export class AtencionComponent implements OnInit {
             genero: 'Femenino'
           }
         }
-        console.log(this.historiaSeleccionada);
+        console.log(this.historiaSeleccionada.fechanac);
         this.historiaBasePropia.grupo_sanguineo = '';
         this.historiasService.getHistoriasPorId(ciu_per).subscribe(respHistoriaPropia => {
-          console.log(this.historiaSeleccionada);
-          if (resp.length == 0) {
+          if (respHistoriaPropia.length == 0) {
             const formData = {
               ciu_per: ciu_per,
               nrohistoria: this.historiaSeleccionada.nrohistoria,
               sexo: this.historiaSeleccionada.genero,
               discapacidad: 'NO',
               orientacion_sexual: 'Heterosexual',
-              grupo_sanguineo: 'NN'
+              grupo_sanguineo: 'NN',
+              fecha_nacimiento: this.historiaSeleccionada.fechanac
             }
             this.historiasService.postHistoria(formData).subscribe(respHistoria => {
               this.historiaBasePropia = respHistoria;
+              this.selectTipoSangre = document.querySelector('#tipoSangre');
+              this.selectTipoSangre.value = this.historiaBasePropia.grupo_sanguineo;
+              this.orientacionSexual = document.querySelector('#orientacionSexual');
+              this.orientacionSexual.value = this.historiaBasePropia.orientacion_sexual;
+              this.discapacidad = document.querySelector('#discapacidad');
+              this.discapacidad.value = this.historiaBasePropia.discapacidad;
+              this.edadNueva = document.querySelector('#edad');
             });
           } else {
             this.historiaBasePropia = respHistoriaPropia[0];
+            this.selectTipoSangre = document.querySelector('#tipoSangre');
+            this.selectTipoSangre.value = this.historiaBasePropia.grupo_sanguineo;
+            this.orientacionSexual = document.querySelector('#orientacionSexual');
+            this.orientacionSexual.value = this.historiaBasePropia.orientacion_sexual;
+            this.discapacidad = document.querySelector('#discapacidad');
+            this.discapacidad.value = this.historiaBasePropia.discapacidad;
+            this.edadNueva = document.querySelector('#edad');
           }
-          this.selectTipoSangre = document.querySelector('#tipoSangre');
-          this.selectTipoSangre.value = this.historiaBasePropia.grupo_sanguineo;
-          this.orientacionSexual = document.querySelector('#orientacionSexual');
-          this.orientacionSexual.value = this.historiaBasePropia.orientacion_sexual;
-          this.discapacidad = document.querySelector('#discapacidad');
-          this.discapacidad.value = this.historiaBasePropia.discapacidad;
         })
-
+        this.btnAgregarConsulta.classList.remove('hidden');
       }
     })
-    /*this.historiasService.getHistoriasPorId(ciu_per).subscribe(resp => {
-      if (resp.length == 0) {
-        Swal.fire({
-          title: 'El paciente no tiene historia clinica, desea crearla?',
-          showDenyButton: true,
-          confirmButtonText: 'Crear',
-          denyButtonText: `Salir`,
-        }).then((result) => {
-          // Read more about isConfirmed, isDenied below 
-          if (result.isConfirmed) {
-            const formData = {
-              ciu_per: ciu_per
-            }
-            this.historiasService.postHistoria(formData).subscribe(respHistoria => {
-              console.log(respHistoria);
-              Swal.fire('La historia fue creada correctamente', '', 'success');
-            });
-          } else if (result.isDenied) {
-            this.clienteSeleccionado = {
-              cedruc: '',
-              descrip: '',
-              direcci: '',
-              email1: '',
-              seq_ciu: '',
-              telefon1: ''
-            };
-            Swal.fire('La historia no fue creada', '', 'info')
-          }
-        })
-      } else {
-        console.log('Cargando datos...');
-      }
+  }
 
-      //If exist the history
-      
-    })*/
+  cambiarHistoria(parametroDeCambio: string) {
+    Swal.fire({
+      title: 'Esta seguro de cambiar los datos del paciente?',
+      showDenyButton: true,
+      confirmButtonText: 'Continuar',
+      denyButtonText: `Salir`,
+    }).then((result) => {
+      // Read more about isConfirmed, isDenied below 
+      if (result.isConfirmed) {
+        if (parametroDeCambio == 'grupo_sanguineo') {
+          this.historiasService.putHistoria(this.selectTipoSangre.value, this.historiaBasePropia.id, parametroDeCambio).subscribe(resp => {
+            Swal.fire(`${resp.mensaje}`, '', 'success');
+          });
+        } else if (parametroDeCambio == 'discapacidad') {
+          this.historiasService.putHistoria(this.discapacidad.value, this.historiaBasePropia.id, parametroDeCambio).subscribe(resp => {
+            Swal.fire(`${resp.mensaje}`, '', 'success');
+          });
+        } else if (parametroDeCambio == 'orientacion_sexual') {
+          this.historiasService.putHistoria(this.orientacionSexual.value, this.historiaBasePropia.id, parametroDeCambio).subscribe(resp => {
+            Swal.fire(`${resp.mensaje}`, '', 'success');
+          });
+        }
+      } else if (result.isDenied) {
+        Swal.fire('Los datos no fueron cambiados', '', 'info')
+      }
+    })
+  }
+
+  abrirTablaNuevaConsulta() {
+    this.tablaNuevaConsulta.classList.remove('hidden');
+    this.btnAgregarConsulta.classList.add('hidden');
   }
 }

@@ -28,4 +28,12 @@ export class HistoriasService {
     return this.http.get<Historia[]>(url, { headers });
   }
 
+  putHistoria(id1: any, id2: any, id3: any) {
+    const url = `${this.baseUrl}historias/editarHistoria/${id1}/${id2}/${id3}`;
+    const headers = new HttpHeaders()
+      .set('auth-token', localStorage.getItem('token') || '');
+
+    return this.http.get<any>(url, { headers });
+  }
+
 }
