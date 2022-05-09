@@ -11,7 +11,14 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService) {
   }
 
+  usuario: any;
+
   ngOnInit(): void {
+    this.cargarUsuario();
   }
 
+  cargarUsuario() {
+    console.log(this.authService.usuario.usuario);
+    this.usuario = this.authService.usuario;
+  }
 }

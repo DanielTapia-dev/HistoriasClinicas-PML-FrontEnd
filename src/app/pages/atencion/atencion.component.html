@@ -163,46 +163,156 @@
     <div id="tablaNuevaConsulta" class="hidden">
       <div class="flex flex-col w-full ">
         <div class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll">
-          <div
+          <div (click)="clickMotivoConsulta()" id="btnMontivoConsulta"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-slate-200 hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="fas fa-user-md"></i>
             <p class="text-center leading-none">Motivo de consulta</p>
           </div>
-          <div
+          <div (click)="clickAntecedentes()" id="btnAntecedentes"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="far fa-calendar-plus"></i>
             <p class="text-center leading-none">Antecedentes</p>
           </div>
-          <div
+          <div (click)="clickSignosVitales()" id="btnSignosVitales"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="fas fa-heartbeat"></i>
             <p class="text-center leading-none">Signos Vitales</p>
           </div>
-          <div
+          <div (click)="clickExamenFisico()" id="btnExamenFisico"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="fas fa-child"></i>
             <p class="text-center leading-none">Examen Físico</p>
           </div>
-          <div
+          <div (click)="clickDiagnostico()" id="btnDiagnostico"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="fas fa-stethoscope"></i>
             <p class="text-center leading-none">Diagnostico</p>
           </div>
-          <div
+          <div (click)="clickTratamiento()" id="btnTratamiento"
             class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
             <i class="fas fa-capsules"></i>
             <p class="text-center leading-none">Tratamiento/Prescipción</p>
           </div>
         </div>
-        <div class="w-full">
+        <div id="motivoConsulta" class="w-full">
           <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
             <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Motivo de atención">
             <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="10"></textarea>
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          </div>
+        </div>
+        <div id="antecedentes" class="w-full hidden">
+          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
+            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Antecedentes"
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          </div>
+        </div>
+        <div id="signosVitales" class="w-full hidden">
+          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
+            <div class="flex flex-row justify-center items-center w-full">
+              <div class="overflow-x-scroll border-x border-t bg-white">
+                <table class="table-auto border w-full">
+                  <thead class="border-b">
+                    <tr class="bg-gray-100">
+                      <th class="text-left p-4 font-medium border-r">
+                        Peso
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Talla
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        IMC
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Pr. Sist
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Pr. Med
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Temp
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        FC
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Sat
+                      </th>
+                      <th class="text-left p-4 font-medium">
+                        FR
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4 border-r">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                      <td class="p-4">
+                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="examenFisico" class="w-full hidden">
+          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
+            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Examen Físico"
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Resultados de examenes"
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          </div>
+        </div>
+        <div id="diagnostico" class="w-full hidden">
+          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2 ">
+            <div class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-1/3">
+              <button class="fas fa-search text-xl px-1 text-blue-900"></button>
+              <input placeholder="Código CIE10" id="inputBuscadorCie10" class="w-full bg-inherit outline-0 ml-1"
+                type="text" (keyup.enter)="onEnterCIE10()" />
+            </div>
+            <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Diagnostico">
+            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          </div>
+        </div>
+        <div id="tratamiento" class="w-full hidden">
+          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
+            <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Tratamiento">
+            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
+              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
           </div>
         </div>
       </div>
-
+      <div class="flex flex-row justify-center my-2">
+        <button
+          class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60">
+          Guardar Consulta Médica
+        </button>
+      </div>
     </div>
   </div>
 </div>

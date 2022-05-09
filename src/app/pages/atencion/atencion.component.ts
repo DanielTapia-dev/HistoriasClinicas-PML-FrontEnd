@@ -13,8 +13,6 @@ export class AtencionComponent implements OnInit {
 
   constructor(private pacientesService: PacientesService, private historiasService: HistoriasService) { }
 
-  checkCedula: any;
-  checkNombre: any;
   clienteSeleccionado: any = {
     cedruc: '',
     descrip: '',
@@ -36,6 +34,8 @@ export class AtencionComponent implements OnInit {
   clientes: Cliente[] = [];
 
   //Objetos HTML
+  checkCedula: any;
+  checkNombre: any;
   selectTipoSangre: any;
   orientacionSexual: any;
   discapacidad: any;
@@ -43,12 +43,36 @@ export class AtencionComponent implements OnInit {
   edadNueva: any;
   btnAgregarConsulta: any;
   tablaNuevaConsulta: any;
+  motivoConsulta: any;
+  antecedentes: any;
+  signosVitales: any;
+  examenFisico: any;
+  diagnostico: any;
+  tratamiento: any;
+  btnMontivoConsulta: any;
+  btnAntecedentes: any;
+  btnSignosVitales: any;
+  btnExamenFisico: any;
+  btnDiagnostico: any;
+  btnTratamiento: any;
 
   ngOnInit(): void {
     this.checkCedula = document.querySelector('#cbox1');
     this.checkNombre = document.querySelector('#cbox2');
     this.btnAgregarConsulta = document.querySelector('#btnAgregarConsulta');
     this.tablaNuevaConsulta = document.querySelector('#tablaNuevaConsulta');
+    this.motivoConsulta = document.querySelector('#motivoConsulta');
+    this.antecedentes = document.querySelector('#antecedentes');
+    this.signosVitales = document.querySelector('#signosVitales');
+    this.examenFisico = document.querySelector('#examenFisico');
+    this.diagnostico = document.querySelector('#diagnostico');
+    this.tratamiento = document.querySelector('#tratamiento');
+    this.btnMontivoConsulta = document.querySelector('#btnMontivoConsulta');
+    this.btnAntecedentes = document.querySelector('#btnAntecedentes');
+    this.btnSignosVitales = document.querySelector('#btnSignosVitales');
+    this.btnExamenFisico = document.querySelector('#btnExamenFisico');
+    this.btnDiagnostico = document.querySelector('#btnDiagnostico');
+    this.btnTratamiento = document.querySelector('#btnTratamiento');
   }
 
   cargarClientes() {
@@ -226,4 +250,136 @@ export class AtencionComponent implements OnInit {
     this.tablaNuevaConsulta.classList.remove('hidden');
     this.btnAgregarConsulta.classList.add('hidden');
   }
+
+  onEnterCIE10() {
+    console.log('Buscando CIE10...');
+  }
+
+  clickMotivoConsulta() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.remove('hidden');
+    this.antecedentes.classList.add('hidden');
+    this.signosVitales.classList.add('hidden');
+    this.examenFisico.classList.add('hidden');
+    this.diagnostico.classList.add('hidden');
+    this.tratamiento.classList.add('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.add('bg-slate-200')
+    this.btnAntecedentes.classList.remove('bg-slate-200')
+    this.btnSignosVitales.classList.remove('bg-slate-200')
+    this.btnExamenFisico.classList.remove('bg-slate-200')
+    this.btnDiagnostico.classList.remove('bg-slate-200')
+    this.btnTratamiento.classList.remove('bg-slate-200')
+    this.btnAntecedentes.classList.add('bg-white')
+    this.btnSignosVitales.classList.add('bg-white')
+    this.btnExamenFisico.classList.add('bg-white')
+    this.btnDiagnostico.classList.add('bg-white')
+    this.btnTratamiento.classList.add('bg-white')
+  }
+
+  clickAntecedentes() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.add('hidden');
+    this.antecedentes.classList.remove('hidden');
+    this.signosVitales.classList.add('hidden');
+    this.examenFisico.classList.add('hidden');
+    this.diagnostico.classList.add('hidden');
+    this.tratamiento.classList.add('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.remove('bg-slate-200')
+    this.btnAntecedentes.classList.add('bg-slate-200')
+    this.btnSignosVitales.classList.remove('bg-slate-200')
+    this.btnExamenFisico.classList.remove('bg-slate-200')
+    this.btnDiagnostico.classList.remove('bg-slate-200')
+    this.btnTratamiento.classList.remove('bg-slate-200')
+    this.btnMontivoConsulta.classList.add('bg-white')
+    this.btnSignosVitales.classList.add('bg-white')
+    this.btnExamenFisico.classList.add('bg-white')
+    this.btnDiagnostico.classList.add('bg-white')
+    this.btnTratamiento.classList.add('bg-white')
+  };
+  clickSignosVitales() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.add('hidden');
+    this.antecedentes.classList.add('hidden');
+    this.signosVitales.classList.remove('hidden');
+    this.examenFisico.classList.add('hidden');
+    this.diagnostico.classList.add('hidden');
+    this.tratamiento.classList.add('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.remove('bg-slate-200')
+    this.btnAntecedentes.classList.remove('bg-slate-200')
+    this.btnSignosVitales.classList.add('bg-slate-200')
+    this.btnExamenFisico.classList.remove('bg-slate-200')
+    this.btnDiagnostico.classList.remove('bg-slate-200')
+    this.btnTratamiento.classList.remove('bg-slate-200')
+    this.btnMontivoConsulta.classList.add('bg-white')
+    this.btnAntecedentes.classList.add('bg-white')
+    this.btnExamenFisico.classList.add('bg-white')
+    this.btnDiagnostico.classList.add('bg-white')
+    this.btnTratamiento.classList.add('bg-white')
+  };
+  clickExamenFisico() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.add('hidden');
+    this.antecedentes.classList.add('hidden');
+    this.signosVitales.classList.add('hidden');
+    this.examenFisico.classList.remove('hidden');
+    this.diagnostico.classList.add('hidden');
+    this.tratamiento.classList.add('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.remove('bg-slate-200')
+    this.btnAntecedentes.classList.remove('bg-slate-200')
+    this.btnSignosVitales.classList.remove('bg-slate-200')
+    this.btnExamenFisico.classList.add('bg-slate-200')
+    this.btnDiagnostico.classList.remove('bg-slate-200')
+    this.btnTratamiento.classList.remove('bg-slate-200')
+    this.btnMontivoConsulta.classList.add('bg-white')
+    this.btnAntecedentes.classList.add('bg-white')
+    this.btnSignosVitales.classList.add('bg-white')
+    this.btnDiagnostico.classList.add('bg-white')
+    this.btnTratamiento.classList.add('bg-white')
+  };
+  clickDiagnostico() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.add('hidden');
+    this.antecedentes.classList.add('hidden');
+    this.signosVitales.classList.add('hidden');
+    this.examenFisico.classList.add('hidden');
+    this.diagnostico.classList.remove('hidden');
+    this.tratamiento.classList.add('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.remove('bg-slate-200')
+    this.btnAntecedentes.classList.remove('bg-slate-200')
+    this.btnSignosVitales.classList.remove('bg-slate-200')
+    this.btnExamenFisico.classList.remove('bg-slate-200')
+    this.btnDiagnostico.classList.add('bg-slate-200')
+    this.btnTratamiento.classList.remove('bg-slate-200')
+    this.btnMontivoConsulta.classList.add('bg-white')
+    this.btnAntecedentes.classList.add('bg-white')
+    this.btnSignosVitales.classList.add('bg-white')
+    this.btnExamenFisico.classList.add('bg-white')
+    this.btnTratamiento.classList.add('bg-white')
+  };
+  clickTratamiento() {
+    //Mover entre pantallas
+    this.motivoConsulta.classList.add('hidden');
+    this.antecedentes.classList.add('hidden');
+    this.signosVitales.classList.add('hidden');
+    this.examenFisico.classList.add('hidden');
+    this.diagnostico.classList.add('hidden');
+    this.tratamiento.classList.remove('hidden');
+    //Cambiar de color el boton
+    this.btnMontivoConsulta.classList.remove('bg-slate-200');
+    this.btnAntecedentes.classList.remove('bg-slate-200');
+    this.btnSignosVitales.classList.remove('bg-slate-200');
+    this.btnExamenFisico.classList.remove('bg-slate-200');
+    this.btnDiagnostico.classList.remove('bg-slate-200');
+    this.btnTratamiento.classList.add('bg-slate-200');
+    this.btnMontivoConsulta.classList.add('bg-white');
+    this.btnAntecedentes.classList.add('bg-white');
+    this.btnSignosVitales.classList.add('bg-white');
+    this.btnExamenFisico.classList.add('bg-white');
+    this.btnDiagnostico.classList.add('bg-white');
+  };
 }
