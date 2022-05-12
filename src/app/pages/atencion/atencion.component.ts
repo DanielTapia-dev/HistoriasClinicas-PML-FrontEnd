@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/models/clientes';
+import { AuthService } from 'src/app/services/auth.service';
 import { HistoriasService } from 'src/app/services/historias.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import Swal from 'sweetalert2';
@@ -11,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class AtencionComponent implements OnInit {
 
-  constructor(private pacientesService: PacientesService, private historiasService: HistoriasService) { }
+  constructor(private pacientesService: PacientesService, private historiasService: HistoriasService, private authService: AuthService) { }
 
   clienteSeleccionado: any = {
     cedruc: '',
@@ -32,6 +33,7 @@ export class AtencionComponent implements OnInit {
   pageActual: any = 1;
   maxPage: number = 30;
   clientes: Cliente[] = [];
+  empleado: any;
 
   //Objetos HTML
   checkCedula: any;
@@ -55,12 +57,21 @@ export class AtencionComponent implements OnInit {
   btnExamenFisico: any;
   btnDiagnostico: any;
   btnTratamiento: any;
+  inputPeso: any;
+  inputTalla: any;
+  inputImc: any;
+  btnHistorialClinico: any;
+  tablaHistorialMedico: any;
 
   ngOnInit(): void {
+    this.empleado = this.authService.usuario.usuario;
+
     this.checkCedula = document.querySelector('#cbox1');
     this.checkNombre = document.querySelector('#cbox2');
     this.btnAgregarConsulta = document.querySelector('#btnAgregarConsulta');
+    this.btnHistorialClinico = document.querySelector('#btnHistorialClinico');
     this.tablaNuevaConsulta = document.querySelector('#tablaNuevaConsulta');
+    this.tablaHistorialMedico = document.querySelector('#tablaHistorialMedico');
     this.motivoConsulta = document.querySelector('#motivoConsulta');
     this.antecedentes = document.querySelector('#antecedentes');
     this.signosVitales = document.querySelector('#signosVitales');
@@ -95,16 +106,16 @@ export class AtencionComponent implements OnInit {
     } else if (this.buscadorNombre == true) {
       let parametroBusqueda = this.inputBuscadorNombre.value;
       parametroBusqueda = parametroBusqueda.toUpperCase();
-      let parametroFinal = `descrip LIKE '%`;
+      let parametroFinal = `CLi.descrip LIKE '%`;
       for (let index = 0; index < parametroBusqueda.length; index++) {
         const element = parametroBusqueda[index];
         if (element != ' ') {
           parametroFinal = parametroFinal + element;
         } else {
-          parametroFinal = parametroFinal + `%' AND descrip LIKE '%`;
+          parametroFinal = parametroFinal + `%' AND Cli.descrip LIKE '%`;
         }
       }
-      parametroFinal = parametroFinal + `%';`;
+      parametroFinal = parametroFinal + `%'`;
       const formData = {
         condicion: parametroFinal
       }
@@ -151,6 +162,21 @@ export class AtencionComponent implements OnInit {
   }
 
   cargarHistoria(ciu_per: number, cliente: any) {
+    this.btnAgregarConsulta = document.querySelector('#btnAgregarConsulta');
+    this.tablaNuevaConsulta = document.querySelector('#tablaNuevaConsulta');
+    this.motivoConsulta = document.querySelector('#motivoConsulta');
+    this.antecedentes = document.querySelector('#antecedentes');
+    this.signosVitales = document.querySelector('#signosVitales');
+    this.examenFisico = document.querySelector('#examenFisico');
+    this.diagnostico = document.querySelector('#diagnostico');
+    this.tratamiento = document.querySelector('#tratamiento');
+    this.btnMontivoConsulta = document.querySelector('#btnMontivoConsulta');
+    this.btnAntecedentes = document.querySelector('#btnAntecedentes');
+    this.btnSignosVitales = document.querySelector('#btnSignosVitales');
+    this.btnExamenFisico = document.querySelector('#btnExamenFisico');
+    this.btnDiagnostico = document.querySelector('#btnDiagnostico');
+    this.btnTratamiento = document.querySelector('#btnTratamiento');
+
     this.tablaNuevaConsulta.classList.add('hidden');
     this.pacientesService.getHistoriales(ciu_per).subscribe(resp => {
       console.log(resp);
@@ -214,6 +240,7 @@ export class AtencionComponent implements OnInit {
           }
         })
         this.btnAgregarConsulta.classList.remove('hidden');
+        this.btnHistorialClinico.classList.remove('hidden');
       }
     })
   }
@@ -249,6 +276,7 @@ export class AtencionComponent implements OnInit {
   abrirTablaNuevaConsulta() {
     this.tablaNuevaConsulta.classList.remove('hidden');
     this.btnAgregarConsulta.classList.add('hidden');
+    this.tablaHistorialMedico.classList.add('hidden');
   }
 
   onEnterCIE10() {
@@ -319,6 +347,28 @@ export class AtencionComponent implements OnInit {
     this.btnDiagnostico.classList.add('bg-white')
     this.btnTratamiento.classList.add('bg-white')
   };
+
+  clickSignosVitalesEnfermero() {
+    this.signosVitales.classList.remove('hidden');
+  };
+
+  abrirTablaHistorial() {
+    this.tablaHistorialMedico.classList.remove('hidden');
+    this.tablaNuevaConsulta.classList.add('hidden');
+    this.btnAgregarConsulta.classList.remove('hidden');
+  }
+
+  calcularIMC() {
+    this.inputPeso = document.querySelector('#peso');
+    this.inputTalla = document.querySelector('#talla');
+    this.inputImc = document.querySelector('#imc');
+
+    console.log(this.inputPeso.value + '--' + this.inputTalla.value);
+    if (this.inputTalla.value != '' && this.inputTalla.value != '') {
+      this.inputImc.value = this.inputPeso.value / this.inputTalla.value;
+    }
+  }
+
   clickExamenFisico() {
     //Mover entre pantallas
     this.motivoConsulta.classList.add('hidden');

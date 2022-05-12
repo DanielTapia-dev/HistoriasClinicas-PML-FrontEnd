@@ -3,41 +3,89 @@
     <p class="text-blue-900 font-semibold text-lg ml-2">Atención Médica</p>
     <div class="flex flex-col md:flex-row">
       <div class="flex flex-col md:w-3/5 md:mr-1">
-        <div *ngIf="buscadorCedula" class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg">
-          <button (click)="cargarClientes()" class="fas fa-search text-xl px-1 text-blue-900"></button>
-          <input placeholder="Cédula" id="inputBuscadorCedula" class="w-full bg-inherit outline-0 ml-1" type="number"
-            (keyup.enter)="onEnter()" />
+        <div
+          *ngIf="buscadorCedula"
+          class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg"
+        >
+          <button
+            (click)="cargarClientes()"
+            class="fas fa-search text-xl px-1 text-blue-900"
+          ></button>
+          <input
+            placeholder="Cédula"
+            id="inputBuscadorCedula"
+            class="w-full bg-inherit outline-0 ml-1"
+            type="number"
+            (keyup.enter)="onEnter()"
+          />
         </div>
-        <div *ngIf="buscadorNombre" class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg">
-          <button (click)="cargarClientes()" class="fas fa-search text-xl px-1 text-blue-900"></button>
-          <input placeholder="Nombre" id="inputBuscadorNombre" class="w-full bg-inherit outline-0 ml-1" type="text"
-            (keyup.enter)="onEnter()" />
+        <div
+          *ngIf="buscadorNombre"
+          class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg"
+        >
+          <button
+            (click)="cargarClientes()"
+            class="fas fa-search text-xl px-1 text-blue-900"
+          ></button>
+          <input
+            placeholder="Nombre"
+            id="inputBuscadorNombre"
+            class="w-full bg-inherit outline-0 ml-1"
+            type="text"
+            (keyup.enter)="onEnter()"
+          />
         </div>
         <div class="mx-2 mt-1 flex flex-row">
-          <label (click)="cambiarBuscador('cedula')" class="font-semibold text-blue-900"><input
-              class="mr-1 rounded-full" type="radio" name="buscador" id="cbox1" checked />Cédula</label>
-          <label (click)="cambiarBuscador('nombre')" class="font-semibold text-blue-900"><input
-              class="mx-1 rounded-full" type="radio" name="buscador" id="cbox2" />Nombre</label>
+          <label
+            (click)="cambiarBuscador('cedula')"
+            class="font-semibold text-blue-900"
+            ><input
+              class="mr-1 rounded-full"
+              type="radio"
+              name="buscador"
+              id="cbox1"
+              checked
+            />Cédula</label
+          >
+          <label
+            (click)="cambiarBuscador('nombre')"
+            class="font-semibold text-blue-900"
+            ><input
+              class="mx-1 rounded-full"
+              type="radio"
+              name="buscador"
+              id="cbox2"
+            />Nombre</label
+          >
         </div>
         <div *ngIf="clientes.length > 0" class="mt-2 pr-4">
-          <table class="table-auto outline outline-2 outline-blue-900 mx-2 rounded-lg w-full">
-            <thead class="text-blue-900 outline outline-2 outline-blue-900 rounded-t-lg">
+          <table
+            class="table-auto outline outline-2 outline-blue-900 mx-2 rounded-lg w-full"
+          >
+            <thead
+              class="text-blue-900 outline outline-2 outline-blue-900 rounded-t-lg"
+            >
               <tr class="w-full mb-4 text-sm">
                 <th class="text-left">Cédula</th>
                 <th class="text-left">Nombre</th>
                 <th class="text-left">Historia</th>
               </tr>
             </thead>
-            <tbody class="bg-grey-light items-center" *ngFor="
-              let cliente of clientes
-                | paginate: { itemsPerPage: 5, currentPage: pageActual }
-            ">
+            <tbody
+              class="bg-grey-light items-center"
+              *ngFor="
+                let cliente of clientes
+                  | paginate: { itemsPerPage: 5, currentPage: pageActual }
+              "
+            >
               <tr class="text-xxs">
                 <td class="my-2">{{ cliente.cedruc }}</td>
                 <td>{{ cliente.descrip }}</td>
                 <td class="py-2">
-                  <button (click)="cargarHistoria(cliente.seq_ciu, cliente)"
-                    class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60">
+                  <button
+                    (click)="cargarHistoria(cliente.seq_ciu, cliente)"
+                    class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+                  >
                     Cargar Historia
                   </button>
                 </td>
@@ -45,75 +93,89 @@
             </tbody>
           </table>
           <div class="text-xs" style="display: flex; justify-content: center">
-            <pagination-controls (pageChange)="pageActual = $event" [maxSize]=6 [autoHide]=true [responsive]=true
-              previousLabel="Anterior" nextLabel="Siguiente">
+            <pagination-controls
+              (pageChange)="pageActual = $event"
+              [maxSize]="6"
+              [autoHide]="true"
+              [responsive]="true"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+            >
             </pagination-controls>
           </div>
         </div>
       </div>
       <div
-        class="md:w-3/5 border-2 border-blue-900 p-2 mt-1 mx-2 md:mr-2 rounded-lg text-xs overflow-x-scroll md:overflow-hidden">
+        class="md:w-3/5 border-2 border-blue-900 p-2 mt-1 mx-2 md:mr-2 rounded-lg text-xs overflow-x-scroll md:overflow-hidden"
+      >
         <div class="flex flex-col ml-20 mr-2 md:ml-0 md:mr-2">
-          <div class="flex flex-row justify-center ">
-            <a class="bg-gray-400 mt-1 p-8 rounded-full"><i class="fas fa-user-alt text-8xl text-white"></i></a>
+          <div class="flex flex-row justify-center">
+            <a class="bg-gray-400 mt-1 p-8 rounded-full"
+              ><i class="fas fa-user-alt text-8xl text-white"></i
+            ></a>
           </div>
-          <div *ngIf="clienteSeleccionado.descrip == ''" class="flex flex-row justify-center mt-1">
-            <a class="mt-2 font-semibold text-2xl text-gray-500">Aún no ha seleccionado un paciente</a>
+          <div
+            *ngIf="clienteSeleccionado.descrip == ''"
+            class="flex flex-row justify-center mt-1"
+          >
+            <a class="mt-2 font-semibold text-2xl text-gray-500"
+              >Aún no ha seleccionado un paciente</a
+            >
           </div>
-          <div *ngIf="clienteSeleccionado.descrip != ''" class="flex flex-row justify-center mt-1">
-            <a class="font-semibold">{{clienteSeleccionado.descrip}}</a>
+          <div
+            *ngIf="clienteSeleccionado.descrip != ''"
+            class="flex flex-row justify-center mt-1"
+          >
+            <a class="font-semibold">{{ clienteSeleccionado.descrip }}</a>
           </div>
-          <div *ngIf="clienteSeleccionado.descrip != ''" class="flex flex-row justify-center mx-4 items-center">
+          <div
+            *ngIf="clienteSeleccionado.descrip != ''"
+            class="flex flex-row justify-center mx-4 items-center"
+          >
             <a class="font-semibold">H. clínica:&nbsp;</a>
-            <a class="font-light">{{historiaSeleccionada.nrohistoria}}</a>
+            <a class="font-light">{{ historiaSeleccionada.nrohistoria }}</a>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">Sexo:&nbsp;</a>
-            <a class="font-light">{{historiaSeleccionada.genero}}</a>
+            <a class="font-light">{{ historiaSeleccionada.genero }}</a>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">Discapacidad:&nbsp;</a>
             <div class="flex justify-center">
               <select
-                class=" text-sm
-                                              font-normal
-                                              text-gray-700
-                                              bg-white bg-clip-padding bg-no-repeat
-                                              border border-solid border-gray-300
-                                              rounded
-                                              transition
-                                              ease-in-out
-                                              m-0
-                                              focus:text-gray-700 focus:bg-white focus:border-blue-500 focus:outline-none"
-                aria-label="Default select example" id="discapacidad" name="discapacidad"
-                (change)="cambiarHistoria('discapacidad')">
+                class="text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-500 focus:outline-none"
+                aria-label="Default select example"
+                id="discapacidad"
+                name="discapacidad"
+                (change)="cambiarHistoria('discapacidad')"
+              >
                 <option value="NO">NO</option>
                 <option value="SI">SI</option>
               </select>
             </div>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">Fecha Nacimiento:&nbsp;</a>
-            <a class="font-light">{{historiaSeleccionada.fechanac | date:'shortDate'}}</a>
+            <a class="font-light">{{
+              historiaSeleccionada.fechanac | date: "shortDate"
+            }}</a>
           </div>
-          <div *ngIf="clienteSeleccionado.descrip != ''" class="flex flex-row justify-center mx-4 items-center">
+          <div
+            *ngIf="clienteSeleccionado.descrip != ''"
+            class="flex flex-row justify-center mx-4 items-center"
+          >
             <a class="font-semibold">Email:&nbsp;</a>
-            <a class="font-light">{{clienteSeleccionado.email1}}</a>
+            <a class="font-light">{{ clienteSeleccionado.email1 }}</a>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">Teléfono:&nbsp;</a>
-            <a class="font-light">{{clienteSeleccionado.telefon1}}</a>
+            <a class="font-light">{{ clienteSeleccionado.telefon1 }}</a>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">T. Sangre:&nbsp;</a>
             <div class="flex justify-center">
-              <select class=" text-sm
-                          font-normal
-                          text-gray-700
-                          bg-white bg-clip-padding bg-no-repeat
-                          border border-solid border-gray-300
-                          rounded
-                          transition
-                          ease-in-out
-                          m-0
-                          focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                aria-label="Default select example" id="tipoSangre" name="tipoSangre"
-                (change)="cambiarHistoria('grupo_sanguineo')">
+              <select
+                class="text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                aria-label="Default select example"
+                id="tipoSangre"
+                name="tipoSangre"
+                (change)="cambiarHistoria('grupo_sanguineo')"
+              >
                 <option value="NN">N/N</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
@@ -125,26 +187,23 @@
                 <option value="O-">O-</option>
               </select>
             </div>
-
           </div>
-          <div *ngIf="clienteSeleccionado.descrip != ''" class="flex flex-row justify-center mt-1 items-center">
+          <div
+            *ngIf="clienteSeleccionado.descrip != ''"
+            class="flex flex-row justify-center mt-1 items-center"
+          >
             <a class="font-semibold">Dirección:&nbsp;</a>
-            <a class="font-light">{{clienteSeleccionado.direcci}}</a>
+            <a class="font-light">{{ clienteSeleccionado.direcci }}</a>
             <a class="font-semibold">&nbsp;&nbsp;</a>
             <a class="font-semibold">Orientación sexual:&nbsp;</a>
             <div class="flex justify-center">
-              <select class=" text-sm
-                                    font-normal
-                                    text-gray-700
-                                    bg-white bg-clip-padding bg-no-repeat
-                                    border border-solid border-gray-300
-                                    rounded
-                                    transition
-                                    ease-in-out
-                                    m-0
-                                    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                aria-label="Default select example" id="orientacionSexual" name="orientacionSexual"
-                (change)="cambiarHistoria('orientacion_sexual')">
+              <select
+                class="text-sm font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                aria-label="Default select example"
+                id="orientacionSexual"
+                name="orientacionSexual"
+                (change)="cambiarHistoria('orientacion_sexual')"
+              >
                 <option value="Heterosexual">Heterosexual</option>
                 <option value="Homosexual">Homosexual</option>
               </select>
@@ -153,124 +212,209 @@
         </div>
       </div>
     </div>
-    <hr class="my-2">
-    <div class="flex flex-row justify-center mt-1">
-      <button (click)="abrirTablaNuevaConsulta()" id="btnAgregarConsulta"
-        class="hidden text-sm md:text-lg text-white bg-purple-500 shadow-lg shadow-purple-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60">
+    <hr class="my-2" />
+    <div class="flex flex-row justify-center my-1">
+      <button
+        (click)="abrirTablaHistorial()"
+        id="btnHistorialClinico"
+        class="hidden text-sm md:text-base text-white bg-purple-500 shadow-lg mr-1 shadow-purple-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+      >
+        Cargar Historial
+      </button>
+      <button
+        (click)="abrirTablaNuevaConsulta()"
+        id="btnAgregarConsulta"
+        class="hidden text-sm md:text-base text-white bg-purple-500 shadow-lg shadow-purple-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+      >
         Nueva Consulta
       </button>
     </div>
-    <div id="tablaNuevaConsulta" class="hidden">
-      <div class="flex flex-col w-full ">
-        <div class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll">
-          <div (click)="clickMotivoConsulta()" id="btnMontivoConsulta"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-slate-200 hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+    <div
+      *ngIf="empleado.tipo == 'Médico'"
+      id="tablaNuevaConsulta"
+      class="hidden"
+    >
+      <div class="flex flex-col w-full">
+        <div
+          class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll"
+        >
+          <div
+            (click)="clickMotivoConsulta()"
+            id="btnMontivoConsulta"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-slate-200 hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="fas fa-user-md"></i>
             <p class="text-center leading-none">Motivo de consulta</p>
           </div>
-          <div (click)="clickAntecedentes()" id="btnAntecedentes"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+          <div
+            (click)="clickAntecedentes()"
+            id="btnAntecedentes"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="far fa-calendar-plus"></i>
             <p class="text-center leading-none">Antecedentes</p>
           </div>
-          <div (click)="clickSignosVitales()" id="btnSignosVitales"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+          <div
+            (click)="clickSignosVitales()"
+            id="btnSignosVitales"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="fas fa-heartbeat"></i>
             <p class="text-center leading-none">Signos Vitales</p>
           </div>
-          <div (click)="clickExamenFisico()" id="btnExamenFisico"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+          <div
+            (click)="clickExamenFisico()"
+            id="btnExamenFisico"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="fas fa-child"></i>
             <p class="text-center leading-none">Examen Físico</p>
           </div>
-          <div (click)="clickDiagnostico()" id="btnDiagnostico"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+          <div
+            (click)="clickDiagnostico()"
+            id="btnDiagnostico"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="fas fa-stethoscope"></i>
             <p class="text-center leading-none">Diagnostico</p>
           </div>
-          <div (click)="clickTratamiento()" id="btnTratamiento"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full">
+          <div
+            (click)="clickTratamiento()"
+            id="btnTratamiento"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
             <i class="fas fa-capsules"></i>
             <p class="text-center leading-none">Tratamiento/Prescipción</p>
           </div>
         </div>
         <div id="motivoConsulta" class="w-full">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
-            <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Motivo de atención">
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <input
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Motivo de atención"
+            />
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Enfermedad actual"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
           </div>
         </div>
         <div id="antecedentes" class="w-full hidden">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Antecedentes"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Antecedentes"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
           </div>
         </div>
         <div id="signosVitales" class="w-full hidden">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
             <div class="flex flex-row justify-center items-center w-full">
               <div class="overflow-x-scroll border-x border-t bg-white">
                 <table class="table-auto border w-full">
                   <thead class="border-b">
                     <tr class="bg-gray-100">
-                      <th class="text-left p-4 font-medium border-r">
-                        Peso
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        Talla
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        IMC
-                      </th>
+                      <th class="text-left p-4 font-medium border-r">Peso</th>
+                      <th class="text-left p-4 font-medium border-r">Talla</th>
+                      <th class="text-left p-4 font-medium border-r">IMC</th>
                       <th class="text-left p-4 font-medium border-r">
                         Pr. Sist
                       </th>
                       <th class="text-left p-4 font-medium border-r">
                         Pr. Med
                       </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        Temp
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        FC
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        Sat
-                      </th>
-                      <th class="text-left p-4 font-medium">
-                        FR
-                      </th>
+                      <th class="text-left p-4 font-medium border-r">Temp</th>
+                      <th class="text-left p-4 font-medium border-r">FC</th>
+                      <th class="text-left p-4 font-medium border-r">Sat</th>
+                      <th class="text-left p-4 font-medium">FR</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="text-xs">
                     <tr class="border-b hover:bg-gray-50">
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          type="number"
+                          (change)="calcularIMC()"
+                          id="peso"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          type="number"
+                          (change)="calcularIMC()"
+                          id="talla"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="imc"
+                          readonly
+                          class="w-full my-1 p-2 outline-none"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="prSist"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="prMed"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="temp"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="fc"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4 border-r">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="sat"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                       <td class="p-4">
-                        <input class="w-full my-1 p-2 outline-blue-600" type="text">
+                        <input
+                          id="fr"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
                       </td>
                     </tr>
                   </tbody>
@@ -280,38 +424,229 @@
           </div>
         </div>
         <div id="examenFisico" class="w-full hidden">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Examen Físico"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Resultados de examenes"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Examen Físico"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Resultados de examenes"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
           </div>
         </div>
         <div id="diagnostico" class="w-full hidden">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2 ">
-            <div class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-1/3">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <div
+              class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-1/3"
+            >
               <button class="fas fa-search text-xl px-1 text-blue-900"></button>
-              <input placeholder="Código CIE10" id="inputBuscadorCie10" class="w-full bg-inherit outline-0 ml-1"
-                type="text" (keyup.enter)="onEnterCIE10()" />
+              <input
+                placeholder="Código CIE10"
+                id="inputBuscadorCie10"
+                class="w-full bg-inherit outline-0 ml-1"
+                type="text"
+                (keyup.enter)="onEnterCIE10()"
+              />
             </div>
-            <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Diagnostico">
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+            <input
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Diagnostico"
+            />
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Enfermedad actual"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
           </div>
         </div>
         <div id="tratamiento" class="w-full hidden">
-          <div class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2">
-            <input class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Tratamiento">
-            <textarea class="w-full my-1 p-2 outline-blue-600" type="text" placeholder="Enfermedad actual"
-              name="enfermedad_actual" id="enfermedad_actual" cols="30" rows="6"></textarea>
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <input
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Tratamiento"
+            />
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Enfermedad actual"
+              name="enfermedad_actual"
+              id="enfermedad_actual"
+              cols="30"
+              rows="6"
+            ></textarea>
           </div>
         </div>
       </div>
       <div class="flex flex-row justify-center my-2">
         <button
-          class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60">
+          class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+        >
           Guardar Consulta Médica
         </button>
+      </div>
+    </div>
+    <div
+      *ngIf="empleado.tipo == 'Enfermero'"
+      id="tablaNuevaConsulta"
+      class="hidden"
+    >
+      <div class="flex flex-col w-full">
+        <div
+          class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll"
+        >
+          <div
+            (click)="clickSignosVitalesEnfermero()"
+            id="btnSignosVitales"
+            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+          >
+            <i class="fas fa-heartbeat"></i>
+            <p class="text-center leading-none">Signos Vitales</p>
+          </div>
+        </div>
+        <div id="signosVitales" class="w-full hidden">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <div class="flex flex-row justify-center items-center w-full">
+              <div class="overflow-x-scroll border-x border-t bg-white">
+                <table class="table-auto border w-full">
+                  <thead class="border-b text-xs">
+                    <tr class="bg-gray-100">
+                      <th class="text-left p-4 font-medium border-r">
+                        Peso (kg)
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Talla (m)
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">IMC</th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Pr. Sist
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">
+                        Pr. Med
+                      </th>
+                      <th class="text-left p-4 font-medium border-r">Temp</th>
+                      <th class="text-left p-4 font-medium border-r">FC</th>
+                      <th class="text-left p-4 font-medium border-r">Sat</th>
+                      <th class="text-left p-4 font-medium">FR</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-xs">
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="p-4 border-r">
+                        <input
+                          type="number"
+                          (change)="calcularIMC()"
+                          id="peso"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          type="number"
+                          (change)="calcularIMC()"
+                          id="talla"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="imc"
+                          readonly
+                          class="w-full my-1 p-2 outline-none"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="prSist"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="prMed"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="temp"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="fc"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4 border-r">
+                        <input
+                          id="sat"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                      <td class="p-4">
+                        <input
+                          id="fr"
+                          class="w-full my-1 p-2 outline-blue-600"
+                          type="text"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-row justify-center my-2">
+        <button
+          class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+        >
+          Guardar Consulta Médica
+        </button>
+      </div>
+    </div>
+    <div id="tablaHistorialMedico" class="hidden">
+      <div class="flex flex-col w-full">
+        <p>Hola</p>
+        <p>Hola</p>
+        <p>Hola</p>
+        <p>Hola</p>
+        <p>Hola</p>
       </div>
     </div>
   </div>

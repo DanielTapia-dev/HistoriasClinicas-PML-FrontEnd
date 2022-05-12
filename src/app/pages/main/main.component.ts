@@ -14,10 +14,10 @@ export class MainComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    /* this.modal = document.querySelector('#Modal');
+    this.modal = document.querySelector('#Modal');
     this.pantallaPosterior = document.querySelector('#PantallaPosterior');
     this.pantallaPosterior.classList.add('opacity-60');
-    this.pantallaPosterior.classList.add('pointer-events-none'); */
+    this.pantallaPosterior.classList.add('pointer-events-none');
   }
 
   CerrarModal() {
