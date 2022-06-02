@@ -30,6 +30,8 @@ export class HistorialesComponent implements OnInit {
   pageActual: any = 1;
   maxPage: number = 30;
   clientes: Cliente[] = [];
+  ciuCliente: any = '';
+  cliente: any = {};
 
   //Objetos HTML
   checkCedula: any;
@@ -95,16 +97,16 @@ export class HistorialesComponent implements OnInit {
     } else if (this.buscadorNombre == true) {
       let parametroBusqueda = this.inputBuscadorNombre.value;
       parametroBusqueda = parametroBusqueda.toUpperCase();
-      let parametroFinal = `descrip LIKE '%`;
+      let parametroFinal = `CLi.descrip LIKE '%`;
       for (let index = 0; index < parametroBusqueda.length; index++) {
         const element = parametroBusqueda[index];
         if (element != ' ') {
           parametroFinal = parametroFinal + element;
         } else {
-          parametroFinal = parametroFinal + `%' AND descrip LIKE '%`;
+          parametroFinal = parametroFinal + `%' AND Cli.descrip LIKE '%`;
         }
       }
-      parametroFinal = parametroFinal + `%';`;
+      parametroFinal = parametroFinal + `%'`;
       const formData = {
         condicion: parametroFinal
       }
@@ -150,6 +152,8 @@ export class HistorialesComponent implements OnInit {
   }
 
   cargarHistoria(ciu_per: number, cliente: any) {
+    this.ciuCliente = ciu_per;
+    this.cliente = cliente;
     this.pacientesService.getHistoriales(ciu_per).subscribe(resp => {
       console.log(resp);
       if (resp.length == 0) {
@@ -238,6 +242,7 @@ export class HistorialesComponent implements OnInit {
           });
         }
       } else if (result.isDenied) {
+        this.cargarHistoria(this.ciuCliente, this.cliente);
         Swal.fire('Los datos no fueron cambiados', '', 'info')
       }
     })

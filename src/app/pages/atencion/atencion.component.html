@@ -14,6 +14,7 @@
           <input
             placeholder="Cédula"
             id="inputBuscadorCedula"
+            autocomplete="off"
             class="w-full bg-inherit outline-0 ml-1"
             type="number"
             (keyup.enter)="onEnter()"
@@ -30,6 +31,7 @@
           <input
             placeholder="Nombre"
             id="inputBuscadorNombre"
+            autocomplete="off"
             class="w-full bg-inherit outline-0 ml-1"
             type="text"
             (keyup.enter)="onEnter()"
@@ -235,6 +237,7 @@
       class="hidden"
     >
       <div class="flex flex-col w-full">
+        <h1 class="mx-1 md:mx-9">Fecha de consulta: {{ fechaConsulta }}</h1>
         <div
           class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll"
         >
@@ -292,6 +295,7 @@
             class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
           >
             <input
+              id="inputMotivoConsulta"
               class="w-full my-1 p-2 outline-blue-600"
               type="text"
               placeholder="Motivo de atención"
@@ -300,8 +304,7 @@
               class="w-full my-1 p-2 outline-blue-600"
               type="text"
               placeholder="Enfermedad actual"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
+              id="textEnfermedadActual"
               cols="30"
               rows="6"
             ></textarea>
@@ -315,215 +318,10 @@
               class="w-full my-1 p-2 outline-blue-600"
               type="text"
               placeholder="Antecedentes"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
+              id="textAntecedentes"
               cols="30"
               rows="6"
             ></textarea>
-          </div>
-        </div>
-        <div id="signosVitales" class="w-full hidden">
-          <div
-            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
-          >
-            <div class="flex flex-row justify-center items-center w-full">
-              <div class="overflow-x-scroll border-x border-t bg-white">
-                <table class="table-auto border w-full">
-                  <thead class="border-b">
-                    <tr class="bg-gray-100">
-                      <th class="text-left p-4 font-medium border-r">Peso</th>
-                      <th class="text-left p-4 font-medium border-r">Talla</th>
-                      <th class="text-left p-4 font-medium border-r">IMC</th>
-                      <th class="text-left p-4 font-medium border-r">
-                        Pr. Sist
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">
-                        Pr. Med
-                      </th>
-                      <th class="text-left p-4 font-medium border-r">Temp</th>
-                      <th class="text-left p-4 font-medium border-r">FC</th>
-                      <th class="text-left p-4 font-medium border-r">Sat</th>
-                      <th class="text-left p-4 font-medium">FR</th>
-                    </tr>
-                  </thead>
-                  <tbody class="text-xs">
-                    <tr class="border-b hover:bg-gray-50">
-                      <td class="p-4 border-r">
-                        <input
-                          type="number"
-                          (change)="calcularIMC()"
-                          id="peso"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          type="number"
-                          (change)="calcularIMC()"
-                          id="talla"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="imc"
-                          readonly
-                          class="w-full my-1 p-2 outline-none"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="prSist"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="prMed"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="temp"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="fc"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4 border-r">
-                        <input
-                          id="sat"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                      <td class="p-4">
-                        <input
-                          id="fr"
-                          class="w-full my-1 p-2 outline-blue-600"
-                          type="text"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="examenFisico" class="w-full hidden">
-          <div
-            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
-          >
-            <textarea
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Examen Físico"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
-              cols="30"
-              rows="6"
-            ></textarea>
-            <textarea
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Resultados de examenes"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
-              cols="30"
-              rows="6"
-            ></textarea>
-          </div>
-        </div>
-        <div id="diagnostico" class="w-full hidden">
-          <div
-            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
-          >
-            <div
-              class="flex flex-row mt-2 mx-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-1/3"
-            >
-              <button class="fas fa-search text-xl px-1 text-blue-900"></button>
-              <input
-                placeholder="Código CIE10"
-                id="inputBuscadorCie10"
-                class="w-full bg-inherit outline-0 ml-1"
-                type="text"
-                (keyup.enter)="onEnterCIE10()"
-              />
-            </div>
-            <input
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Diagnostico"
-            />
-            <textarea
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Enfermedad actual"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
-              cols="30"
-              rows="6"
-            ></textarea>
-          </div>
-        </div>
-        <div id="tratamiento" class="w-full hidden">
-          <div
-            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
-          >
-            <input
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Tratamiento"
-            />
-            <textarea
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Enfermedad actual"
-              name="enfermedad_actual"
-              id="enfermedad_actual"
-              cols="30"
-              rows="6"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="flex flex-row justify-center my-2">
-        <button
-          class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
-        >
-          Guardar Consulta Médica
-        </button>
-      </div>
-    </div>
-    <div
-      *ngIf="empleado.tipo == 'Enfermero'"
-      id="tablaNuevaConsulta"
-      class="hidden"
-    >
-      <div class="flex flex-col w-full">
-        <div
-          class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll"
-        >
-          <div
-            (click)="clickSignosVitalesEnfermero()"
-            id="btnSignosVitales"
-            class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
-          >
-            <i class="fas fa-heartbeat"></i>
-            <p class="text-center leading-none">Signos Vitales</p>
           </div>
         </div>
         <div id="signosVitales" class="w-full hidden">
@@ -556,69 +354,104 @@
                   </thead>
                   <tbody class="text-xs">
                     <tr class="border-b hover:bg-gray-50">
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="peso"
                           type="number"
+                          required
+                          autocomplete="off"
                           (change)="calcularIMC()"
                           id="peso"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="talla"
                           type="number"
+                          autocomplete="off"
+                          required
                           (change)="calcularIMC()"
                           id="talla"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="imc"
+                          autocomplete="off"
                           id="imc"
                           readonly
                           class="w-full my-1 p-2 outline-none"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
-                          id="prSist"
+                          ngModel
+                          name="prsist"
+                          autocomplete="off"
+                          required
+                          id="prsist"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
-                          id="prMed"
+                          ngModel
+                          name="prdist"
+                          autocomplete="off"
+                          required
+                          id="prdist"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="temp"
+                          autocomplete="off"
+                          required
                           id="temp"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="fc"
+                          required
+                          autocomplete="off"
                           id="fc"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4 border-r">
+                      <td class="border-r">
                         <input
+                          ngModel
+                          name="sat"
+                          autocomplete="off"
+                          required
                           id="sat"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
                         />
                       </td>
-                      <td class="p-4">
+                      <td class="">
                         <input
+                          ngModel
+                          name="fr"
+                          autocomplete="off"
+                          required
                           id="fr"
                           class="w-full my-1 p-2 outline-blue-600"
                           type="text"
@@ -631,22 +464,401 @@
             </div>
           </div>
         </div>
+        <div id="examenFisico" class="w-full hidden">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Examen Físico"
+              id="textExamenFisico"
+              cols="30"
+              rows="6"
+            ></textarea>
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Resultados de examenes"
+              id="textResultadosExamenes"
+              cols="30"
+              rows="6"
+            ></textarea>
+          </div>
+        </div>
+        <div id="diagnostico" class="w-full hidden">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <div class="mx-2 mt-1 flex flex-row">
+              <label
+                (click)="cambiarBuscadorCie10('codigo')"
+                class="font-semibold text-blue-900"
+                ><input
+                  class="mr-1 rounded-full"
+                  type="radio"
+                  name="buscadorCie10"
+                  id="cbox2"
+                  checked
+                />Codigo</label
+              >
+              <label
+                (click)="cambiarBuscadorCie10('descripcion')"
+                class="font-semibold text-blue-900"
+                ><input
+                  class="mx-1 rounded-full"
+                  type="radio"
+                  name="buscadorCie10"
+                  id="cbox2"
+                />Descripción</label
+              >
+            </div>
+            <div
+              class="flex flex-row mt-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-full"
+            >
+              <input
+                placeholder="Código CIE10"
+                id="inputBuscadorCodigoCie10"
+                class="w-full bg-inherit outline-0 ml-1"
+                type="text"
+                (keyup.enter)="onEnterCIE10()"
+                autocomplete="off"
+              />
+              <input
+                placeholder="Descripción CIE10"
+                id="inputBuscadorDescripcionCie10"
+                class="w-full bg-inherit outline-0 ml-1 hidden"
+                type="text"
+                (keyup.enter)="onEnterCIE10()"
+                autocomplete="off"
+              />
+            </div>
+            <select
+              id="selectCodigoCie10"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option selected>Seleccione un código</option>
+              <option *ngFor="let enfermedadCie of enfermedadesCie" value="US">
+                {{ enfermedadCie.codigo_cie10 }}
+              </option>
+            </select>
+            <label class="pl-2 hidden" id="labelDescipcionCie10">Código</label>
+            <select
+              id="selectDescripcionCie10"
+              class="hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              (change)="cambiarLabel()"
+            >
+              <option selected>Seleccione una descripción</option>
+              <option
+                *ngFor="let enfermedadCie of enfermedadesCie"
+                [value]="enfermedadCie.codigo_cie10"
+              >
+                {{ enfermedadCie.descripcion }}
+              </option>
+            </select>
+            <div
+              id="dropdownDivider"
+              class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+            >
+              <ul
+                class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                aria-labelledby="dropdownDividerButton"
+              >
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >Dashboard</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >Settings</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    >Earnings</a
+                  >
+                </li>
+              </ul>
+              <div class="py-1">
+                <a
+                  href="#"
+                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >Separated link</a
+                >
+              </div>
+            </div>
+            <input
+              id="inputDiagnostico"
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Diagnostico"
+            />
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Enfermedad actual"
+              id="textEnfermedadActualDiagnostico"
+              cols="30"
+              rows="6"
+            ></textarea>
+          </div>
+        </div>
+        <div id="tratamiento" class="w-full hidden">
+          <div
+            class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+          >
+            <input
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Tratamiento"
+              id="inputTratamiento"
+            />
+            <textarea
+              class="w-full my-1 p-2 outline-blue-600"
+              type="text"
+              placeholder="Enfermedad actual"
+              id="textEnfermedadActualTratamiento"
+              cols="30"
+              rows="6"
+            ></textarea>
+          </div>
+        </div>
       </div>
       <div class="flex flex-row justify-center my-2">
         <button
+          (click)="guardarConsultaMedico()"
           class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
         >
           Guardar Consulta Médica
         </button>
       </div>
     </div>
+    <div
+      *ngIf="empleado.tipo == 'Enfermero'"
+      id="tablaNuevaConsulta"
+      class="hidden"
+    >
+      <form
+        (ngSubmit)="GuardarConsultaEnfermero(formularioEnfermero)"
+        #formularioEnfermero="ngForm"
+      >
+        <div class="flex flex-col w-full">
+          <div
+            class="flex flex-row justify-between mx-1 md:mx-9 border border-black overflow-x-scroll"
+          >
+            <div
+              (click)="clickSignosVitalesEnfermero()"
+              id="btnSignosVitales"
+              class="flex flex-col items-center justify-center text-sm md:text-base text-blue-600 bg-white hover:bg-slate-200 font-medium px-6 py-3 cursor-pointer w-full"
+            >
+              <i class="fas fa-heartbeat"></i>
+              <p class="text-center leading-none">Signos Vitales</p>
+            </div>
+          </div>
+          <div id="signosVitales" class="w-full hidden">
+            <div
+              class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
+            >
+              <div class="flex flex-row justify-center items-center w-full">
+                <div class="overflow-x-scroll border-x border-t bg-white">
+                  <table class="table-auto border w-full">
+                    <thead class="border-b text-xs">
+                      <tr class="bg-gray-100">
+                        <th class="text-left p-4 font-medium border-r">
+                          Peso (kg)
+                        </th>
+                        <th class="text-left p-4 font-medium border-r">
+                          Talla (m)
+                        </th>
+                        <th class="text-left p-4 font-medium border-r">IMC</th>
+                        <th class="text-left p-4 font-medium border-r">
+                          Pr. Sist
+                        </th>
+                        <th class="text-left p-4 font-medium border-r">
+                          Pr. Med
+                        </th>
+                        <th class="text-left p-4 font-medium border-r">Temp</th>
+                        <th class="text-left p-4 font-medium border-r">FC</th>
+                        <th class="text-left p-4 font-medium border-r">Sat</th>
+                        <th class="text-left p-4 font-medium">FR</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-xs">
+                      <tr class="border-b hover:bg-gray-50">
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="peso"
+                            type="number"
+                            required
+                            autocomplete="off"
+                            (change)="calcularIMC()"
+                            id="peso"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="talla"
+                            type="number"
+                            autocomplete="off"
+                            required
+                            (change)="calcularIMC()"
+                            id="talla"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="imc"
+                            autocomplete="off"
+                            id="imc"
+                            readonly
+                            class="w-full my-1 p-2 outline-none"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="prsist"
+                            autocomplete="off"
+                            required
+                            id="prsist"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="prdist"
+                            autocomplete="off"
+                            required
+                            id="prdist"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="temp"
+                            autocomplete="off"
+                            required
+                            id="temp"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="fc"
+                            required
+                            autocomplete="off"
+                            id="fc"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="border-r">
+                          <input
+                            ngModel
+                            name="sat"
+                            autocomplete="off"
+                            required
+                            id="sat"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                        <td class="">
+                          <input
+                            ngModel
+                            name="fr"
+                            autocomplete="off"
+                            required
+                            id="fr"
+                            class="w-full my-1 p-2 outline-blue-600"
+                            type="text"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-row justify-center my-2">
+          <button
+            type="submit"
+            class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
+          >
+            Guardar Consulta Médica
+          </button>
+        </div>
+      </form>
+    </div>
     <div id="tablaHistorialMedico" class="hidden">
-      <div class="flex flex-col w-full">
-        <p>Hola</p>
-        <p>Hola</p>
-        <p>Hola</p>
-        <p>Hola</p>
-        <p>Hola</p>
+      <div class="flex flex-col w-full px-4">
+        <table class="table-auto border rounded-md w-full">
+          <thead class="border-b text-xs">
+            <tr class="bg-blue-300">
+              <th class="text-left md:px-4 md:py-2 font-medium border-r">#</th>
+              <th class="text-left md:px-4 md:py-2 font-medium border-r">
+                Fecha
+              </th>
+              <th class="text-left md:px-4 md:py-2 font-medium border-r">
+                Empleado
+              </th>
+              <th class="text-left md:px-4 md:py-2 font-medium border-r">
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody class="text-xs">
+            <tr
+              *ngFor="let consulta of consultas; let i = index"
+              class="border-b hover:bg-gray-50"
+            >
+              <td class="border-r md:px-4 md:py-1">{{ i + 1 }}</td>
+              <td class="border-r md:px-4 md:py-1">
+                {{ consulta.fecha | date: "yyyy-MM-dd" }}
+              </td>
+              <td class="border-r md:px-4 md:py-1">{{ consulta.empleado }}</td>
+              <td class="border-r md:px-4 md:py-1">
+                <button
+                  *ngIf="empleado.tipo == 'Médico'"
+                  (click)="
+                    cargarConsulta(consulta.fecha, consulta.id, consulta)
+                  "
+                  class="text-black bg-yellow-300 shadow-lg shadow-yellow-300/50 rounded-lg font-medium px-3 py-0.5 hover:bg-purple-400 hover:shadow-purple-900/60 mr-2"
+                >
+                  Cargar Consulta
+                </button>
+                <button
+                  class="text-black bg-red-300 shadow-lg shadow-red-300/50 rounded-lg font-medium px-3 py-0.5 hover:bg-purple-400 hover:shadow-purple-900/60"
+                >
+                  Borrar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

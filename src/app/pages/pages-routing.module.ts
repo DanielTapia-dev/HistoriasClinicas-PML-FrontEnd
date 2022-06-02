@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { ValidarPaginaGuard } from '../guards/validar-pagina.guard';
+import { ValidarTokenGuard } from '../guards/validar-token.guard';
 import { AtencionComponent } from './atencion/atencion.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HistorialesComponent } from './historiales/historiales.component';
@@ -13,17 +14,21 @@ const routes: Routes = [
     children: [
       {
         path: 'atencion',
-        component: AtencionComponent
+        component: AtencionComponent,
+        canActivate: [ValidarTokenGuard],
+        canLoad: [ValidarTokenGuard]
       },
       {
         path: 'historiales',
         component: HistorialesComponent,
-        canActivate: [ValidarPaginaGuard],
-        canLoad: [ValidarPaginaGuard]
+        canActivate: [ValidarPaginaGuard, ValidarTokenGuard],
+        canLoad: [ValidarPaginaGuard, ValidarTokenGuard]
       },
       {
         path: '',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [ValidarTokenGuard],
+        canLoad: [ValidarTokenGuard]
       },
       {
         path: '**',
