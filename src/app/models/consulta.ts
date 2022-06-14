@@ -17,6 +17,7 @@ export interface Consulta {
     examen_fisico: string;
     resultados_examenes: string;
     codigo_cie10_per: string;
+    tratamiento: string;
     id_cronologia_per: string;
     id_condicion_per: string;
     id_tipo_per: string;

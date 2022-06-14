@@ -217,7 +217,7 @@
     <hr class="my-2" />
     <div class="flex flex-row justify-center my-1">
       <button
-        (click)="abrirTablaHistorial()"
+        (click)="abrirTablaHistorialDentroTabla()"
         id="btnHistorialClinico"
         class="hidden text-sm md:text-base text-white bg-purple-500 shadow-lg mr-1 shadow-purple-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
       >
@@ -498,7 +498,7 @@
                   class="mr-1 rounded-full"
                   type="radio"
                   name="buscadorCie10"
-                  id="cbox2"
+                  id="checkCodigoCie10"
                   checked
                 />Codigo</label
               >
@@ -509,122 +509,156 @@
                   class="mx-1 rounded-full"
                   type="radio"
                   name="buscadorCie10"
-                  id="cbox2"
+                  id="checkCodigoDescripcion"
                 />Descripción</label
               >
             </div>
-            <div
-              class="flex flex-row mt-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2 w-full"
-            >
-              <input
-                placeholder="Código CIE10"
-                id="inputBuscadorCodigoCie10"
-                class="w-full bg-inherit outline-0 ml-1"
-                type="text"
-                (keyup.enter)="onEnterCIE10()"
-                autocomplete="off"
-              />
-              <input
-                placeholder="Descripción CIE10"
-                id="inputBuscadorDescripcionCie10"
-                class="w-full bg-inherit outline-0 ml-1 hidden"
-                type="text"
-                (keyup.enter)="onEnterCIE10()"
-                autocomplete="off"
-              />
-            </div>
-            <select
-              id="selectCodigoCie10"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>Seleccione un código</option>
-              <option *ngFor="let enfermedadCie of enfermedadesCie" value="US">
-                {{ enfermedadCie.codigo_cie10 }}
-              </option>
-            </select>
-            <label class="pl-2 hidden" id="labelDescipcionCie10">Código</label>
-            <select
-              id="selectDescripcionCie10"
-              class="hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              (change)="cambiarLabel()"
-            >
-              <option selected>Seleccione una descripción</option>
-              <option
-                *ngFor="let enfermedadCie of enfermedadesCie"
-                [value]="enfermedadCie.codigo_cie10"
-              >
-                {{ enfermedadCie.descripcion }}
-              </option>
-            </select>
-            <div
-              id="dropdownDivider"
-              class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-            >
-              <ul
-                class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownDividerButton"
-              >
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Dashboard</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Settings</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >Earnings</a
-                  >
-                </li>
-              </ul>
-              <div class="py-1">
-                <a
-                  href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >Separated link</a
+            <div class="flex flex-col md:flex-row w-full">
+              <div class="flex flex-col w-full md:w-1/2 pr-3">
+                <div id="inputBuscadorCodigoCie10" class="">
+                  <div class="flex flex-col">
+                    <div
+                      class="flex flex-row mt-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2"
+                    >
+                      <button
+                        (click)="onEnterCIE10()"
+                        class="fas fa-search text-xl px-1 text-blue-900"
+                      ></button>
+                      <input
+                        id="inputCodigoCie"
+                        placeholder="Código CIE10"
+                        class="w-full bg-inherit outline-0 ml-1"
+                        type="text"
+                        (keyup.enter)="onEnterCIE10()"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <select
+                      id="selectCodigoCie10"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      (change)="asignarTextDiagnostico('')"
+                    >
+                      <option *ngIf="enfermedadesCie.length == 0" selected>
+                        Seleccione un código
+                      </option>
+                      <option
+                        *ngFor="let enfermedadCie of enfermedadesCie"
+                        [value]="enfermedadCie.codigo_cie10"
+                      >
+                        {{ enfermedadCie.codigo_cie10 }}
+                      </option>
+                    </select>
+                    <textarea
+                      class="w-full my-1 p-2 outline-blue-600"
+                      type="text"
+                      placeholder="Descripción"
+                      id="textEnfermedadActualDiagnostico"
+                      cols="30"
+                      readonly
+                      rows="6"
+                    ></textarea>
+                  </div>
+                </div>
+                <div id="inputBuscadorDescripcionCie10" class="hidden">
+                  <div class="flex flex-col">
+                    <div
+                      class="flex flex-row mt-2 px-1 outline outline-2 outline-blue-900 rounded-lg mb-2"
+                    >
+                      <button
+                        (click)="onEnterCIE10()"
+                        class="fas fa-search text-xl px-1 text-blue-900"
+                      ></button>
+                      <input
+                        id="inputDescripcionCie"
+                        placeholder="Descripción CIE10"
+                        class="w-full bg-inherit outline-0 ml-1"
+                        type="text"
+                        (keyup.enter)="onEnterCIE10()"
+                        autocomplete="off"
+                      />
+                    </div>
+                    <label class="pl-2 hidden" id="labelDescipcionCie10"
+                      >Código</label
+                    >
+                    <select
+                      id="selectDescripcionCie10"
+                      class="hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full h-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      (change)="cambiarLabel('')"
+                    >
+                      <option *ngIf="enfermedadesCie.length == 0" selected>
+                        Seleccione una descripción
+                      </option>
+                      <option
+                        *ngFor="let enfermedadCie of enfermedadesCie"
+                        [value]="enfermedadCie.codigo_cie10"
+                      >
+                        {{ enfermedadCie.descripcion }}
+                      </option>
+                    </select>
+                    <textarea
+                      class="w-full my-1 p-2 outline-blue-600"
+                      type="text"
+                      placeholder="Descripción"
+                      id="textEnfermedadActualDiagnosticoDescripcion"
+                      readonly
+                      cols="30"
+                      rows="6"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col w-full md:w-1/2">
+                <select
+                  id="selectCronologia"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
+                  <option
+                    *ngFor="let cronologia of cronologias"
+                    [value]="cronologia.id"
+                  >
+                    {{ cronologia.nombre }}
+                  </option>
+                </select>
+                <select
+                  id="selectCondicion"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option
+                    *ngFor="let condicion of condiciones"
+                    [value]="condicion.id"
+                  >
+                    {{ condicion.nombre }}
+                  </option>
+                </select>
+                <select
+                  id="selectTipo"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                  <option *ngFor="let tipo of tipos" [value]="tipo.id">
+                    {{ tipo.nombre }}
+                  </option>
+                </select>
+                <textarea
+                  class="w-full my-1 p-2 outline-blue-600"
+                  type="text"
+                  placeholder="Observación:"
+                  id="textObservacionDiagnostico"
+                  cols="30"
+                  rows="6"
+                ></textarea>
               </div>
             </div>
-            <input
-              id="inputDiagnostico"
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Diagnostico"
-            />
-            <textarea
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Enfermedad actual"
-              id="textEnfermedadActualDiagnostico"
-              cols="30"
-              rows="6"
-            ></textarea>
           </div>
         </div>
         <div id="tratamiento" class="w-full hidden">
           <div
             class="flex flex-col border-x border-b border-black items-start mx-1 md:mx-9 px-2 py-2"
           >
-            <input
-              class="w-full my-1 p-2 outline-blue-600"
-              type="text"
-              placeholder="Tratamiento"
-              id="inputTratamiento"
-            />
             <textarea
               class="w-full my-1 p-2 outline-blue-600"
               type="text"
-              placeholder="Enfermedad actual"
-              id="textEnfermedadActualTratamiento"
+              placeholder="Tratamiento"
+              id="textTratamiento"
               cols="30"
               rows="6"
             ></textarea>
@@ -636,7 +670,7 @@
           (click)="guardarConsultaMedico()"
           class="text-white bg-green-500 shadow-lg shadow-green-400/60 rounded-lg font-medium px-3 py-0.5 hover:bg-blue-700 hover:shadow-blue-900/60"
         >
-          Guardar Consulta Médica
+          Actualizar Consulta Médica
         </button>
       </div>
     </div>
@@ -851,6 +885,7 @@
                   Cargar Consulta
                 </button>
                 <button
+                  (click)="peticionBorrar(consulta.id)"
                   class="text-black bg-red-300 shadow-lg shadow-red-300/50 rounded-lg font-medium px-3 py-0.5 hover:bg-purple-400 hover:shadow-purple-900/60"
                 >
                   Borrar

@@ -1,13 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Cliente } from 'src/app/models/clientes';
+import { Condicion } from 'src/app/models/condicion';
 import { Consulta } from 'src/app/models/consulta';
+import { Cronologia } from 'src/app/models/cronologia';
 import { Diagnostico } from 'src/app/models/diagnostico';
+import { Tipo } from 'src/app/models/tipo';
 import { AuthService } from 'src/app/services/auth.service';
+import { CondicionService } from 'src/app/services/condicion.service';
 import { ConsultasService } from 'src/app/services/consultas.service';
+import { CronologiaService } from 'src/app/services/cronologia.service';
 import { DiagnosticosService } from 'src/app/services/diagnosticos.service';
 import { HistoriasService } from 'src/app/services/historias.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
+import { TipoService } from 'src/app/services/tipo.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -18,7 +24,7 @@ import Swal from 'sweetalert2';
 export class AtencionComponent implements OnInit {
 
   constructor(private pacientesService: PacientesService, private historiasService: HistoriasService, private authService: AuthService, private consultasService: ConsultasService,
-    private diagnosticosService: DiagnosticosService) { }
+    private diagnosticosService: DiagnosticosService, private cronologiasService: CronologiaService, private condicionesService: CondicionService, private tipoService: TipoService) { }
 
   clienteSeleccionado: any = {
     cedruc: '',
@@ -39,6 +45,9 @@ export class AtencionComponent implements OnInit {
   pageActual: any = 1;
   maxPage: number = 30;
   clientes: Cliente[] = [];
+  cronologias: Cronologia[] = [];
+  condiciones: Condicion[] = [];
+  tipos: Tipo[] = [];
   empleado: any;
   ciuCliente: any = '';
   cliente: any = {};
@@ -80,10 +89,13 @@ export class AtencionComponent implements OnInit {
   inputSat: any;
   inputFr: any;
   btnHistorialClinico: any;
+  btnHistorialClinico2: any;
   tablaHistorialMedico: any;
   tablaUpdateConsulta: any;
   inputMotivoConsulta: any;
+  textEnfermedadActual: any;
   textEnfermedadActualDiagnostico: any;
+  textEnfermedadActualDiagnosticoDescripcion: any;
   textAntecedentes: any;
   textExamenFisico: any;
   textResultadosExamenes: any;
@@ -94,13 +106,26 @@ export class AtencionComponent implements OnInit {
   selectCodigoCie10: any;
   selectDescripcionCie10: any;
   labelDescipcionCie10: any;
+  inputCodigoCie: any;
+  inputDescripcionCie: any;
+  checkCodigoCie10: any;
+  checkCodigoDescripcion: any;
+  selectCronologia: any;
+  selectCondicion: any;
+  selectTipo: any;
+  textObservacionDiagnostico: any;
+  textTratamiento: any;
 
   ngOnInit(): void {
     this.empleado = this.authService.usuario.usuario;
+    this.cargarCronologias();
+    this.cargarCondiciones();
+    this.cargarTipos();
     this.checkCedula = document.querySelector('#cbox1');
     this.checkNombre = document.querySelector('#cbox2');
     this.btnAgregarConsulta = document.querySelector('#btnAgregarConsulta');
     this.btnHistorialClinico = document.querySelector('#btnHistorialClinico');
+    this.btnHistorialClinico2 = document.querySelector('#btnHistorialClinico2');
     this.tablaNuevaConsulta = document.querySelector('#tablaNuevaConsulta');
     this.tablaUpdateConsulta = document.querySelector('#tablaUpdateConsulta');
     this.tablaHistorialMedico = document.querySelector('#tablaHistorialMedico');
@@ -168,22 +193,39 @@ export class AtencionComponent implements OnInit {
   cargarDiagnosticos(id: string) {
     this.diagnosticosService.getConsultas(id).subscribe(resp => {
       this.enfermedadesCie = resp;
-      console.log(resp);
-
+      this.asignarTextDiagnostico(this.enfermedadesCie[0].codigo_cie10);
+      this.cambiarLabel(this.enfermedadesCie[0].codigo_cie10);
     });
   }
 
   cargarDiagnosticosDescripcion(id: string) {
     this.diagnosticosService.getConsultasDescripcion(id).subscribe(resp => {
       this.enfermedadesCie = resp;
+      this.asignarTextDiagnostico(this.enfermedadesCie[0].codigo_cie10);
+      this.cambiarLabel(this.enfermedadesCie[0].codigo_cie10);
     });
   }
 
-  cambiarLabel() {
+  cambiarLabel(codigo: any) {
     this.labelDescipcionCie10 = document.querySelector('#labelDescipcionCie10');
-    this.labelDescipcionCie10.value = this.selectDescripcionCie10.value;
-    this.labelDescipcionCie10.innerHTML = `Código: ${this.selectDescripcionCie10.value}`;
-    console.log(this.labelDescipcionCie10.value);
+    this.selectDescripcionCie10 = document.querySelector('#selectDescripcionCie10');
+    if (codigo == '') {
+      this.labelDescipcionCie10 = document.querySelector('#labelDescipcionCie10');
+      this.textEnfermedadActualDiagnosticoDescripcion = document.querySelector('#textEnfermedadActualDiagnosticoDescripcion');
+      this.labelDescipcionCie10.value = this.selectDescripcionCie10.value;
+      this.labelDescipcionCie10.innerHTML = `Código: ${this.selectDescripcionCie10.value}`;
+      this.diagnosticosService.getDescripcion(this.labelDescipcionCie10.value).subscribe(resp => {
+        this.textEnfermedadActualDiagnosticoDescripcion.value = resp.descripcion;
+      });
+    } else {
+      this.labelDescipcionCie10 = document.querySelector('#labelDescipcionCie10');
+      this.textEnfermedadActualDiagnosticoDescripcion = document.querySelector('#textEnfermedadActualDiagnosticoDescripcion');
+      this.labelDescipcionCie10.value = this.selectDescripcionCie10.value;
+      this.labelDescipcionCie10.innerHTML = `Código: ${codigo}`;
+      this.diagnosticosService.getDescripcion(codigo).subscribe(resp => {
+        this.textEnfermedadActualDiagnosticoDescripcion.value = resp.descripcion;
+      });
+    }
   }
 
   onEnter() {
@@ -312,6 +354,7 @@ export class AtencionComponent implements OnInit {
               this.discapacidad = document.querySelector('#discapacidad');
               this.discapacidad.value = this.historiaBasePropia.discapacidad;
               this.edadNueva = document.querySelector('#edad');
+              console.log('Primera');
             });
           } else {
             this.historiaBasePropia = respHistoriaPropia[0];
@@ -323,10 +366,11 @@ export class AtencionComponent implements OnInit {
             this.discapacidad = document.querySelector('#discapacidad');
             this.discapacidad.value = this.historiaBasePropia.discapacidad;
             this.edadNueva = document.querySelector('#edad');
+            console.log('Segunda');
           }
         })
         this.btnAgregarConsulta.classList.remove('hidden');
-        this.btnHistorialClinico.classList.remove('hidden');
+        this.abrirTablaHistorial();
       }
     })
   }
@@ -370,47 +414,241 @@ export class AtencionComponent implements OnInit {
     this.tablaNuevaConsulta.classList.remove('hidden');
     this.btnAgregarConsulta.classList.add('hidden');
     this.tablaHistorialMedico.classList.add('hidden');
+    this.btnHistorialClinico.classList.remove('hidden');
   }
 
   abrirTablaUpdateConsulta() {
     this.tablaNuevaConsulta.classList.remove('hidden');
     this.btnAgregarConsulta.classList.add('hidden');
     this.tablaHistorialMedico.classList.add('hidden');
+    this.btnHistorialClinico.classList.remove('hidden');
   }
 
   onEnterCIE10() {
     if (this.buscadorCie10 == true) {
-      this.inputBuscadorCodigoCie10 = document.querySelector('#inputBuscadorCodigoCie10');
-      this.cargarDiagnosticos(this.inputBuscadorCodigoCie10.value);
+      this.inputCodigoCie = document.querySelector('#inputCodigoCie');
+      this.cargarDiagnosticos(this.inputCodigoCie.value);
     } else {
-      this.inputBuscadorDescripcionCie10 = document.querySelector('#inputBuscadorDescripcionCie10');
-      this.cargarDiagnosticosDescripcion(this.inputBuscadorDescripcionCie10.value);
+      this.inputDescripcionCie = document.querySelector('#inputDescripcionCie');
+      this.cargarDiagnosticosDescripcion(this.inputDescripcionCie.value);
+    }
+  }
+
+  asignarTextDiagnostico(codigo: any) {
+    if (codigo == '') {
+      this.textEnfermedadActualDiagnostico = document.querySelector('#textEnfermedadActualDiagnostico');
+      this.selectCodigoCie10 = document.querySelector('#selectCodigoCie10');
+      console.log(this.selectCodigoCie10.value);
+      this.diagnosticosService.getDescripcion(this.selectCodigoCie10.value).subscribe(resp => {
+        this.textEnfermedadActualDiagnostico.value = resp.descripcion;
+      });
+    } else {
+      this.textEnfermedadActualDiagnostico = document.querySelector('#textEnfermedadActualDiagnostico');
+      this.selectCodigoCie10 = document.querySelector('#selectCodigoCie10');
+      console.log(this.selectCodigoCie10.value);
+      this.diagnosticosService.getDescripcion(codigo).subscribe(resp => {
+        this.textEnfermedadActualDiagnostico.value = resp.descripcion;
+      });
+    }
+  }
+
+  cargarCronologias() {
+    this.cronologiasService.getCronologiasActivas().subscribe(resp => {
+      this.cronologias = resp;
+    })
+  }
+
+  cargarCondiciones() {
+    this.condicionesService.getCondiciones().subscribe(resp => {
+      this.condiciones = resp;
+    })
+  }
+
+  cargarTipos() {
+    this.tipoService.getTipos().subscribe(resp => {
+      this.tipos = resp;
+    })
+  }
+
+  encerarTextos() {
+    try {
+      /* Motivo de consulta */
+      this.inputMotivoConsulta = document.querySelector('#inputMotivoConsulta');
+      this.textEnfermedadActual = document.querySelector('#textEnfermedadActual');
+
+      /* Antecedentes */
+      this.textAntecedentes = document.querySelector('#textAntecedentes');
+
+      /* Signos Vitales */
+      this.inputPeso = document.querySelector('#peso');
+      this.inputTalla = document.querySelector('#talla');
+      this.inputImc = document.querySelector('#imc');
+      this.inputPrsist = document.querySelector('#prsist');
+      this.inputPrdist = document.querySelector('#prdist');
+      this.inputtemp = document.querySelector('#temp');
+      this.inputFc = document.querySelector('#fc');
+      this.inputFr = document.querySelector('#fr');
+      this.inputSat = document.querySelector('#sat');
+
+      /* Examen Fisico */
+      this.textExamenFisico = document.querySelector('#textExamenFisico');
+      this.textResultadosExamenes = document.querySelector('#textResultadosExamenes');
+
+      /* Diagnostico */
+      this.checkCodigoCie10 = document.querySelector('#checkCodigoCie10');
+
+      if (this.checkCodigoCie10.checked == true) {
+        this.selectCodigoCie10 = document.querySelector('#selectCodigoCie10');
+      } else {
+        this.selectCodigoCie10 = document.querySelector('#selectDescripcionCie10');
+      }
+
+      this.selectCronologia = document.querySelector('#selectCronologia');
+      this.selectCondicion = document.querySelector('#selectCondicion');
+      this.selectTipo = document.querySelector('#selectTipo');
+      this.textObservacionDiagnostico = document.querySelector('#textObservacionDiagnostico');
+      this.textTratamiento = document.querySelector('#textTratamiento');
+      /* Motivo de consulta */
+      this.inputMotivoConsulta.value = '';
+      this.textEnfermedadActual.value = '';
+
+      /* Antecedentes */
+      this.textAntecedentes.value = '';
+
+      /* Signos Vitales */
+      this.inputPeso.value = '';
+      this.inputTalla.value = '';
+      this.inputImc.value = '';
+      this.inputPrsist.value = '';
+      this.inputPrdist.value = '';
+      this.inputtemp.value = '';
+      this.inputFc.value = '';
+      this.inputFr.value = '';
+      this.inputSat.value = '';
+
+      /* Examen Fisico */
+      this.textExamenFisico.value = '';
+      this.textResultadosExamenes.value = '';
+
+      /* Diagnostico */
+      this.checkCodigoCie10.value = '';
+
+      if (this.checkCodigoCie10.checked == true) {
+        this.selectCodigoCie10.value = '';
+      } else {
+        this.selectCodigoCie10.value = '';
+      }
+
+      this.selectCronologia.value = '';
+      this.selectCondicion.value = '';
+      this.selectTipo.value = '';
+      this.textObservacionDiagnostico.value = '';
+      this.textTratamiento.value = '';
+    } catch (error) {
+      console.log('Aun no existen textos abiertos');
     }
   }
 
   guardarConsultaMedico() {
-    console.log('Guardando consulta Medica');
+
     console.log(this.idConsultaActual);
+    /* Motivo de consulta */
     this.inputMotivoConsulta = document.querySelector('#inputMotivoConsulta');
-    this.inputTalla = document.querySelector('#talla');
+    this.textEnfermedadActual = document.querySelector('#textEnfermedadActual');
+
+    /* Antecedentes */
+    this.textAntecedentes = document.querySelector('#textAntecedentes');
+
+    /* Signos Vitales */
     this.inputPeso = document.querySelector('#peso');
     this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    this.inputPeso = document.querySelector('#peso');
-    this.inputTalla = document.querySelector('#talla');
-    console.log();
-    console.log();
+    this.inputImc = document.querySelector('#imc');
+    this.inputPrsist = document.querySelector('#prsist');
+    this.inputPrdist = document.querySelector('#prdist');
+    this.inputtemp = document.querySelector('#temp');
+    this.inputFc = document.querySelector('#fc');
+    this.inputFr = document.querySelector('#fr');
+    this.inputSat = document.querySelector('#sat');
+
+    /* Examen Fisico */
+    this.textExamenFisico = document.querySelector('#textExamenFisico');
+    this.textResultadosExamenes = document.querySelector('#textResultadosExamenes');
+
+    /* Diagnostico */
+    this.checkCodigoCie10 = document.querySelector('#checkCodigoCie10');
+
+    if (this.checkCodigoCie10.checked == true) {
+      this.selectCodigoCie10 = document.querySelector('#selectCodigoCie10');
+    } else {
+      this.selectCodigoCie10 = document.querySelector('#selectDescripcionCie10');
+    }
+
+    this.selectCronologia = document.querySelector('#selectCronologia');
+    this.selectCondicion = document.querySelector('#selectCondicion');
+    this.selectTipo = document.querySelector('#selectTipo');
+    this.textObservacionDiagnostico = document.querySelector('#textObservacionDiagnostico');
+    this.textTratamiento = document.querySelector('#textTratamiento');
+
+    if (this.selectCodigoCie10.value) {
+      this.selectCodigoCie10.value = null;
+    }
+
+    let consultaNueva = {
+      id: this.idConsultaActual,
+      peso: this.inputPeso.value,
+      talla: this.inputTalla.value,
+      imc: this.inputImc.value,
+      prsist: this.inputPrsist.value,
+      prdist: this.inputPrdist.value,
+      temp: this.inputtemp.value,
+      fc: this.inputFc.value,
+      sat: this.inputSat.value,
+      fr: this.inputFr.value,
+      observacion_signos: this.textObservacionDiagnostico.value,
+      motivo_atencion: this.inputMotivoConsulta.value,
+      enfermedad_actual: this.textEnfermedadActual.value,
+      antecedentes: this.textAntecedentes.value,
+      examen_fisico: this.textExamenFisico.value,
+      resultados_examenes: this.textResultadosExamenes.value,
+      tratamiento: this.textTratamiento.value,
+      codigo_cie10_per: this.selectCodigoCie10.value,
+      id_cronologia_per: this.selectCronologia.value,
+      id_condicion_per: this.selectCondicion.value,
+      id_tipo_per: this.selectTipo.value,
+      id_empleado_per: this.empleado.id,
+      estado: true
+    };
+
+    console.log(consultaNueva);
+    this.consultasService.putConsulta(consultaNueva).subscribe(resp => {
+      Swal.fire('Consulta guardada correctamente', '', 'success');
+    }, error => {
+      Swal.fire('Existe un error', '', 'error');
+    })
+  }
+
+  peticionBorrar(idConsulta: number) {
+    Swal.fire({
+      title: 'La solicitud de borrar debe ser aprobada por un administrador.',
+      text: '¿Esta seguro de enviar la solicitud?',
+      showDenyButton: true,
+      confirmButtonText: 'Enviar',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      // Read more about isConfirmed, isDenied below 
+      if (result.isConfirmed) {
+        Swal.fire({
+          text: 'La solicitud fue enviada, si es aprobada la consulta dejará de aparecer en el historial.',
+          icon: 'success'
+        })
+      } else if (result.isDenied) {
+        this.cargarHistoria(this.ciuCliente, this.cliente);
+        Swal.fire({
+          text: 'La solicitud no fue enviada',
+          icon: 'info'
+        })
+      }
+    })
   }
 
   clickMotivoConsulta() {
@@ -483,10 +721,20 @@ export class AtencionComponent implements OnInit {
   };
 
   abrirTablaHistorial() {
-    this.cargarConsultas();
+    this.encerarTextos();
     this.tablaHistorialMedico.classList.remove('hidden');
     this.tablaNuevaConsulta.classList.add('hidden');
     this.btnAgregarConsulta.classList.remove('hidden');
+    this.btnHistorialClinico.classList.add('hidden');
+  }
+
+  abrirTablaHistorialDentroTabla() {
+    this.encerarTextos();
+    this.cargarHistoria(this.ciuCliente, this.clienteSeleccionado);
+    this.tablaHistorialMedico.classList.remove('hidden');
+    this.tablaNuevaConsulta.classList.add('hidden');
+    this.btnAgregarConsulta.classList.remove('hidden');
+    this.btnHistorialClinico.classList.add('hidden');
   }
 
   calcularIMC() {
@@ -607,13 +855,60 @@ export class AtencionComponent implements OnInit {
 
   cargarConsultas() {
     this.fechaConsulta = '';
+    console.log('Aqui se da');
     this.consultasService.getConsultas(this.historiaBasePropia.id).subscribe(resp => {
       this.consultas = resp;
+      console.log(resp);
     });
   }
 
   cargarConsulta(fechaConsulta: Date, idConsulta: number, consulta: Consulta) {
-    console.log(consulta);
+    this.enfermedadesCie = [];
+    this.selectCronologia = document.querySelector('#selectCronologia');
+    this.selectCondicion = document.querySelector('#selectCondicion');
+    this.selectTipo = document.querySelector('#selectTipo');
+    /* Motivo de consulta */
+    this.inputMotivoConsulta = document.querySelector('#inputMotivoConsulta');
+    this.textEnfermedadActual = document.querySelector('#textEnfermedadActual');
+
+    /* Antecedentes */
+    this.textAntecedentes = document.querySelector('#textAntecedentes');
+
+    /* Examen Fisico */
+    this.textExamenFisico = document.querySelector('#textExamenFisico');
+    this.textResultadosExamenes = document.querySelector('#textResultadosExamenes');
+
+    /* Tratamiento */
+    this.textTratamiento = document.querySelector('#textTratamiento');
+
+    /* Asignando valores a los inputs o text */
+    this.inputMotivoConsulta.value = consulta.motivo_atencion;
+    this.textEnfermedadActual.value = consulta.enfermedad_actual;
+    this.textAntecedentes.value = consulta.antecedentes;
+    this.textExamenFisico.value = consulta.examen_fisico;
+    this.textResultadosExamenes.value = consulta.resultados_examenes;
+    this.textTratamiento.value = consulta.tratamiento;
+
+    console.log(consulta.tratamiento);
+
+    /* Diagnostico */
+    this.selectCronologia = document.querySelector('#selectCronologia');
+    this.selectCondicion = document.querySelector('#selectCondicion');
+    this.selectTipo = document.querySelector('#selectTipo');
+    this.textObservacionDiagnostico = document.querySelector('#textObservacionDiagnostico');
+    this.textEnfermedadActualDiagnostico = document.querySelector('#textEnfermedadActualDiagnostico');
+    this.textEnfermedadActualDiagnosticoDescripcion = document.querySelector('#textEnfermedadActualDiagnosticoDescripcion');
+
+    this.textObservacionDiagnostico.value = consulta.observacion_signos;
+
+    this.diagnosticosService.getDescripcion(consulta.codigo_cie10_per).subscribe(resp => {
+      this.enfermedadesCie.push(resp);
+      this.textEnfermedadActualDiagnostico.value = resp.descripcion;
+      this.textEnfermedadActualDiagnosticoDescripcion.value = resp.descripcion;
+      this.cambiarLabel(resp.codigo_cie10);
+    });
+
+    /* Signos vitales */
     this.inputTalla.value = consulta.talla;
     this.inputFc.value = consulta.fc;
     this.inputFr.value = consulta.fr;
@@ -624,6 +919,34 @@ export class AtencionComponent implements OnInit {
     this.inputSat.value = consulta.sat;
     this.inputtemp.value = consulta.temp;
     this.idConsultaActual = idConsulta;
+
+    this.cronologiasService.getCronologiaPorId(idConsulta).subscribe(resp => {
+      if (resp.length != 0) {
+        for (let index = 0; index < this.selectCronologia.options.length; index++) {
+          if (this.selectCronologia.options[index].text == resp[0].nombre) {
+            console.log(this.selectCronologia.options[index].selected = true);
+          }
+        }
+      }
+    });
+    this.condicionesService.getCondicionPorId(idConsulta).subscribe(resp => {
+      if (resp.length != 0) {
+        for (let index = 0; index < this.selectCondicion.options.length; index++) {
+          if (this.selectCondicion.options[index].text == resp[0].nombre) {
+            console.log(this.selectCondicion.options[index].selected = true);
+          }
+        }
+      }
+    });
+    this.tipoService.getTipoPorId(idConsulta).subscribe(resp => {
+      if (resp.length != 0) {
+        for (let index = 0; index < this.selectTipo.options.length; index++) {
+          if (this.selectTipo.options[index].text == resp[0].nombre) {
+            console.log(this.selectTipo.options[index].selected = true);
+          }
+        }
+      }
+    });
     this.fechaConsulta = '';
     for (let i = 0; i < 10; i++) {
       const element = fechaConsulta.toString()[i];

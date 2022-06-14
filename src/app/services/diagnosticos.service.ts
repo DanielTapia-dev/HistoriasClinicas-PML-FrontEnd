@@ -12,22 +12,37 @@ export class DiagnosticosService {
 
   private baseUrl: string = environment.baseUrl;
 
-  getConsultas(id: string) {
-    const url = `${this.baseUrl}diagnosticos/${id}`;
+  getDescripcion(id: string) {
+    const url = `${this.baseUrl}diagnosticos/getDescripcion/${id}`;
     console.log(url);
     const headers = new HttpHeaders()
       .set('auth-token', localStorage.getItem('token') || '');
 
-    return this.http.get<Diagnostico[]>(url, { headers });
+    return this.http.get<Diagnostico>(url, { headers });
+  }
+
+  getConsultas(id: string) {
+    const formData = {
+      codigo: id
+    }
+    const url = `${this.baseUrl}diagnosticos`;
+    console.log(url);
+    const headers = new HttpHeaders()
+      .set('auth-token', localStorage.getItem('token') || '');
+
+    return this.http.post<Diagnostico[]>(url, formData, { headers });
   }
 
   getConsultasDescripcion(id: string) {
-    const url = `${this.baseUrl}diagnosticos/getDiagnosticosDescripcion/${id}`;
+    const formData = {
+      descripcion: id
+    }
+    const url = `${this.baseUrl}diagnosticos/getDiagnosticosDescripcion`;
     console.log(url);
     const headers = new HttpHeaders()
       .set('auth-token', localStorage.getItem('token') || '');
 
-    return this.http.get<Diagnostico[]>(url, { headers });
+    return this.http.post<Diagnostico[]>(url, formData, { headers });
   }
 
 }

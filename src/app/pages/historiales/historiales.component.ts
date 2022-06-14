@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from 'src/app/models/clientes';
+import { Consulta } from 'src/app/models/consulta';
+import { ConsultasService } from 'src/app/services/consultas.service';
 import { HistoriasService } from 'src/app/services/historias.service';
 import { PacientesService } from 'src/app/services/pacientes.service';
 import Swal from 'sweetalert2';
@@ -32,6 +34,10 @@ export class HistorialesComponent implements OnInit {
   clientes: Cliente[] = [];
   ciuCliente: any = '';
   cliente: any = {};
+  consultas: Consulta[] = [];
+  consultaActual: any = {
+    fecha: ''
+  };
 
   //Objetos HTML
   checkCedula: any;
@@ -55,8 +61,11 @@ export class HistorialesComponent implements OnInit {
   btnExamenFisico: any;
   btnDiagnostico: any;
   btnTratamiento: any;
+  tablaHistorial: any;
+  vistaConsultaPaciente: any;
+  vistaHistorialesPacientes: any;
 
-  constructor(private pacientesService: PacientesService, private historiasService: HistoriasService) { }
+  constructor(private pacientesService: PacientesService, private historiasService: HistoriasService, private consultasService: ConsultasService) { }
 
   ngOnInit(): void {
     this.checkCedula = document.querySelector('#cbox1');
@@ -75,6 +84,9 @@ export class HistorialesComponent implements OnInit {
     this.btnExamenFisico = document.querySelector('#btnExamenFisico');
     this.btnDiagnostico = document.querySelector('#btnDiagnostico');
     this.btnTratamiento = document.querySelector('#btnTratamiento');
+    this.tablaHistorial = document.querySelector('#tablaHistorial');
+    this.vistaHistorialesPacientes = document.querySelector('#vistaHistorialesPacientes');
+    this.vistaConsultaPaciente = document.querySelector('#vistaConsultaPaciente');
   }
 
   cargarClientes() {
@@ -214,10 +226,58 @@ export class HistorialesComponent implements OnInit {
             this.discapacidad.value = this.historiaBasePropia.discapacidad;
             this.edadNueva = document.querySelector('#edad');
           }
+          this.abrirTablaHistorial();
         })
       }
     })
   }
+
+  abrirTablaHistorial() {
+    this.consultasService.getConsultas(this.historiaBasePropia.id).subscribe(resp => {
+      this.consultas = resp;
+      this.tablaHistorial.classList.remove('hidden');
+    })
+  }
+
+  peticionBorrar(idConsulta: number) {
+    Swal.fire({
+      title: `La solicitud de borrar debe ser aprobada por un administrador.`,
+      text: '¿Esta seguro de enviar la solicitud?',
+      showDenyButton: true,
+      confirmButtonText: 'Enviar',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      // Read more about isConfirmed, isDenied below 
+      if (result.isConfirmed) {
+        Swal.fire({
+          text: 'La solicitud fue enviada, si es aprobada la consulta dejará de aparecer en el historial.',
+          icon: 'success'
+        })
+      } else if (result.isDenied) {
+        this.cargarHistoria(this.ciuCliente, this.cliente);
+        Swal.fire({
+          text: 'La solicitud no fue enviada',
+          icon: 'info'
+        })
+      }
+    })
+  }
+
+  cargarConsulta(fecha: Date, idConsulta: number, consulta: Consulta) {
+    this.consultaActual = consulta;
+    this.consultaActual.fecha = this.consultaActual.fecha[0] + this.consultaActual.fecha[1] + this.consultaActual.fecha[2] + this.consultaActual.fecha[3] + this.consultaActual.fecha[4] + this.consultaActual.fecha[5] + this.consultaActual.fecha[6]
+      + this.consultaActual.fecha[7] + this.consultaActual.fecha[8] + this.consultaActual.fecha[9];
+    this.vistaConsultaPaciente.classList.remove('hidden');
+    this.vistaHistorialesPacientes.classList.add('hidden');
+  }
+
+  abrirVistaHistorial() {
+    this.vistaConsultaPaciente.classList.add('hidden');
+    this.vistaHistorialesPacientes.classList.remove('hidden');
+  }
+
+  imprimirPdf() { }
+
 
   cambiarHistoria(parametroDeCambio: string) {
     Swal.fire({

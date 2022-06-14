@@ -6,3 +6,4 @@ export interface Cliente {
     telefon1: string;
     email1: string;
 }
+
